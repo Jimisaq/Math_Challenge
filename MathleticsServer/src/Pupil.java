@@ -3,6 +3,7 @@ import java.io.*;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.*;
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 
@@ -153,7 +154,7 @@ public class Pupil {
         int participantId = Model.getPupilId(username);
 
         //check if participant has already attempted the challenge
-        if(Model.checkChallengeAttempt(participantId,Integer.parseInt(challengeNumber))){
+        if(!Model.checkChallengeAttempt(Integer.parseInt(challengeNumber),participantId)){
             printWriter.println("You have already attempted this challenge");
             return;
         }
@@ -161,6 +162,7 @@ public class Pupil {
         LocalDateTime startTime;
         int score;
         LocalDateTime endTime;
+        Duration timeTaken;
         int redos=0;
 
         try(Connection conn = Model.createConnection();){
@@ -176,8 +178,11 @@ public class Pupil {
                     startTime = LocalDateTime.now();
                     score = Question.retrieveQuestion(printWriter, br, Integer.parseInt(challengeNumber), participantId, startTime);
                     endTime = LocalDateTime.now();
+                    timeTaken = Duration.between(startTime, endTime);
+
                     printWriter.println("Attempt complete");
                     printWriter.println("Total Marks:" + score);
+                    printWriter.println("Time taken: " + timeTaken.toMinutes() + " minutes and "+timeTaken.toSecondsPart()+" seconds");
                     printWriter.println("_______________");
 
                     //update the attempted challenge table

@@ -29,6 +29,7 @@ public class Main {
         outer:do{
             System.out.print("IES_MCS>>");
             request = scanner.nextLine();
+
             out.println(request);
             if(request.equalsIgnoreCase("done")){
                 break;

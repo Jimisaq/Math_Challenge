@@ -1,7 +1,9 @@
-import java.io.BufferedWriter;
-import java.io.FileWriter;
-import java.io.PrintWriter;
+
+import java.io.*;
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.sql.*;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 public class Pupil {
@@ -12,7 +14,11 @@ public class Pupil {
     private String password;
     private String date_of_birth;
     private String schoolRegNo;
-    private String image;
+    private String imageFilePath;
+
+    //default constructor
+    public Pupil() {
+    }
 
     //constructor
     public Pupil(String name, String username, String email, String password, String date_of_birth, String schoolRegNo, String image) {
@@ -22,7 +28,7 @@ public class Pupil {
         this.password = password;
         this.date_of_birth = date_of_birth;
         this.schoolRegNo = schoolRegNo;
-        this.image = image;
+        this.imageFilePath = image;
     }
     //Setters
     public void setParticipantId(int participantId) {
@@ -54,7 +60,7 @@ public class Pupil {
     }
 
     public void setImage(String image) {
-        this.image = image;
+        this.imageFilePath = image;
     }
 
     //Getters
@@ -86,125 +92,180 @@ public class Pupil {
         return schoolRegNo;
     }
 
-    public String getImage() {
-        return image;
+    public String getImageFilePath() {
+        return imageFilePath;
     }
 
     //Register new interested participant
-    public static void register(Pupil pupil){
-        String name = pupil.getName();
-        String username = pupil.getUsername();
-        String email = pupil.getEmail();
-        String password = pupil.getPassword();
-        String dateOfBirth = pupil.getDate_of_birth();
-        String schoolRegNo = pupil.getSchoolRegNo();
-
-
-        String sql = "insert into participant(name,username,email,password,date_of_birth,school_reg_no) values(?,?,?,?,?,?)";
-
-        try(Connection con = Model.createConnection();) {
-            PreparedStatement st = con.prepareStatement(sql);
-            st.setString(1, name);
-            st.setString(2, username);
-            st.setString(3, email);
-            st.setString(4, password);
-            st.setString(5, dateOfBirth);
-            st.setString(6, schoolRegNo);
-            st.executeUpdate();
-
-        }catch(SQLException e){
-            System.out.println(e.getMessage());
-        }
-
-    }
-
-    //logs successfully registered participant into the system
-    public static void login(String[] req, PrintWriter out) {
-        if (req.length != 4) {
+    public static void register(String[] req, PrintWriter out){
+        if (req.length!=9){
             out.println("Missing parameters");
-            return;
-        }
-        String username = req[2];
-        String password = req[3];
-        switch (req[1]) {
-            case "p":
-                if (Model.checkPupilLogin(username, password)) {
-                    out.println("Login successful");
-                } else {
-                    out.println("Invalid username or password");
-                }
-                break;
-            case "sr":
-                if (Model.checkSRLogin(username, password)) {
-                    out.println("Login successful");
-                } else {
-                    out.println("Invalid username or password");
-                }
-                break;
-            default:
-                out.println("Invalid login type");
-                break;
+            out.println("");
+        }else {
+            String username = req[1];
+            String name = req[2] +" "+ req[3];
+            String email = req[4];
+            String password = req[5];
+            String dateOfBirth = req[6];
+            String schoolRegNo = req[7];
+            String imageFilePath = req[8];
+
+            Pupil pupil = new Pupil(name, username, email, password, dateOfBirth, schoolRegNo, imageFilePath);
+            if (!Model.checkRegNo(pupil)) {
+                out.println("School not registered, please contact the system administrator to register your school first");
+                out.println("");
+            } else if (Model.checkUsername(pupil)) {
+                out.println("Username already taken,try another one");
+                out.println("");
+            } else if (Model.checkStudentRegistration(pupil)) {
+                out.println("Student already registered, please login to attempt challenges");
+                out.println("");
+            } else {
+                Pupil.addPupilToFile(pupil);
+                out.println("Wait for confirmation email from the system administrator");
+                out.println("");
             }
         }
-    //Allows login participant to view open challenges
-    public static String viewChallenges(PrintWriter printWriter){
+    }
+
+
+    //Allows logged in participant to view open challenges
+    public static void viewChallenges(PrintWriter printWriter){
         String chal=null;
-        String challengeID = null;
-        String challengeName = null;
         try(Connection conn = Model.createConnection();){
 
-        String sql = "SELECT ChallengeID, ChallengeName from Challenge WHERE Status = 'Valid'";
+        String sql = "SELECT challenge_no, challenge_name from challenge";
         Statement stmt = conn.createStatement();
         ResultSet rs = stmt.executeQuery(sql);
 
         while (rs.next()){
-        challengeID = rs.getString("ChallengeID");
-        challengeName = rs.getString("ChallengeName");
-        chal=challengeID +"-"+ challengeName;
+        chal=rs.getString("challenge_no")+"."+rs.getString("challenge_name");
         printWriter.println(chal);
-
         }
-
         }catch (SQLException e){
             System.out.println(e.getMessage());
         };
-        chal = (challengeID +"-"+ challengeName);
-         return chal;
     }
 
     //Allows user to attempt a challenge they are interested in
-    public void attemptChallenge(){
+    public static void attemptChallenge(PrintWriter printWriter, BufferedReader br, String[] req,String username){
+        String challengeNumber=req[1];
+        int participantId = Model.getPupilId(username);
 
+        //check if participant has already attempted the challenge
+        if(Model.checkChallengeAttempt(participantId,Integer.parseInt(challengeNumber))){
+            printWriter.println("You have already attempted this challenge");
+            return;
+        }
+
+        LocalDateTime startTime;
+        int score;
+        LocalDateTime endTime;
+        int redos=0;
+
+        try(Connection conn = Model.createConnection();){
+
+        String sql = "SELECT 1 from challenge where challenge_no = ? ";
+        PreparedStatement stmt = conn.prepareStatement(sql);
+        stmt.setString(1,req[1]);
+        ResultSet rs = stmt.executeQuery();
+
+            if(rs.isBeforeFirst()){
+                while(true) {
+                    printWriter.println("retrieving questions...");
+                    startTime = LocalDateTime.now();
+                    score = Question.retrieveQuestion(printWriter, br, Integer.parseInt(challengeNumber), participantId, startTime);
+                    endTime = LocalDateTime.now();
+                    printWriter.println("Attempt complete");
+                    printWriter.println("Total Marks:" + score);
+                    printWriter.println("_______________");
+
+                    //update the attempted challenge table
+                    Model.recordChallenge(Integer.parseInt(challengeNumber), participantId, startTime, endTime, score);
+
+                    //allow the pupil two more redos after the first attempt
+                    if(redos<2) {
+                        printWriter.println("Would you like to try again? Y/N");
+                        printWriter.println();
+                        String redo = br.readLine();
+                        if (redo.equalsIgnoreCase("Y")) {
+                            redos++;
+                        } else {
+                            printWriter.println("Challenge completed");
+                            break;
+                        }
+                    }else {
+                        printWriter.println("You have exhausted your redos");
+                        //printWriter.println();
+                        break;
+                    }
+                }
+
+            }else{
+                printWriter.println("Challenge not found");
+            }
+        }catch (SQLException e){
+            System.out.println(e.getMessage());
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     //check if reg no supplied is in the database
-    public static boolean checkRegNo(Pupil pupil){
-        String regNo = pupil.getSchoolRegNo();
-        ArrayList<String> regNos = new ArrayList<>();
-
-        try(Connection con =Model.createConnection()){
-            String sql ="SELECT school_reg_no FROM School";
-
-            Statement st =con.createStatement();
-            ResultSet rs = st.executeQuery(sql);
-            while(rs.next()){
-                regNos.add(rs.getString("school_reg_no"));
-            }
-
-        }catch(SQLException e){
-            System.out.println(e.getMessage());
-        }
-        return regNos.contains(pupil.getSchoolRegNo());
-
-    }
 
     //to add a pupil to a file
     public static void addPupilToFile(Pupil pupil){
-        try(BufferedWriter writer = new BufferedWriter(new FileWriter("pupils.txt",true))) {
-            writer.write(pupil.getName() + "\n" + pupil.getUsername() + "\n" + pupil.getEmail() + "\n" + pupil.getPassword() + "\n" + pupil.getDate_of_birth() + "\n" + pupil.getSchoolRegNo() + "\n" + pupil.getImage() + "\n");
-        }catch(Exception e){
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter("applicants.txt",true));
+        ) {
+            writer.write(pupil.getName() + " " + pupil.getUsername() + " " + pupil.getEmail() + " " + pupil.getPassword() + " " + pupil.getDate_of_birth() + " " + pupil.getSchoolRegNo() + " " + pupil.getImageFilePath() + "\n");
+
+        } catch (Exception e) {
             System.out.println(e.getMessage());
         }
+        //notify school representative
+        EmailSender.notifySchoolRep(pupil.getSchoolRegNo(),pupil.getName());
 
+    }
+    //put all applicants into an arraylist
+    public static ArrayList<Pupil> addToArrayList(){
+        ArrayList<Pupil> applicants = new ArrayList<>();
+//        String school = "applicants";
+//        String filename = school + ".txt";
+        try(BufferedReader br = new BufferedReader(new FileReader("applicants.txt"))) {
+            String line;
+
+            while ((line = br.readLine()) != null){
+                String[] parts = line.trim().split(" ");
+                Pupil pupil = new Pupil();
+
+                pupil.setName(parts[0]+ " " + parts[1]);
+                pupil.setUsername(parts[2]);
+                pupil.setEmail(parts[3]);
+                pupil.setPassword(parts[4]);
+                pupil.setDate_of_birth(parts[5]);
+                pupil.setSchoolRegNo(parts[6]);
+                pupil.setImage(parts[7]);
+                applicants.add(pupil);
+            }
+        }catch(IOException e){
+            System.out.println(e.getMessage());
+        }
+        return applicants;
+    }
+
+    //to delete a pupil from the file after being confirmed or rejected
+    public static void deleteFromFile(String username){
+        ArrayList<Pupil> applicants = addToArrayList();
+//        String school = "applicants";
+//        String filename = school + ".txt";
+        try(BufferedWriter bw = new BufferedWriter(new FileWriter("applicants.txt"));) {
+            for (Pupil pupil : applicants) {
+                if (!pupil.getUsername().equals(username)) {
+                    bw.write(pupil.getName() + " " + pupil.getUsername() + " " + pupil.getEmail() + " " + pupil.getPassword() + " " + pupil.getDate_of_birth() + " " + pupil.getSchoolRegNo() + " " + pupil.getImageFilePath() + "\n");
+                }
+            }
+        }catch(IOException e){
+            System.out.println(e.getMessage());
+        }
     }
 }

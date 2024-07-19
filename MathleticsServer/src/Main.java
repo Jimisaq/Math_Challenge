@@ -42,6 +42,7 @@ public class Main {
                 switch(req[0]){
                     case "register":
                         Pupil.register(req, out);
+                        //Pupil.storeImage(req,in,out,socket);
                         break;
                     case "login":
                         Authenticator.login(req,out,in);

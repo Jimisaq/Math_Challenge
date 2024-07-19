@@ -1,8 +1,6 @@
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
+import java.io.*;
 import java.net.Socket;
+import java.util.Arrays;
 import java.util.Scanner;
 
 public class Main {
@@ -29,6 +27,7 @@ public class Main {
         outer:do{
             System.out.print("IES_MCS>>");
             request = scanner.nextLine();
+            //sendImage(request,out);
 
             out.println(request);
             if(request.equalsIgnoreCase("done")){
@@ -61,6 +60,30 @@ public class Main {
                 -----------------------------------------------------------------------------------------------------------------------
                 """;
         System.out.println(instructionSet);
+
+    }
+    //turn an image into a byte stream and send the bytestream to the server
+    public static void sendImage(String request, PrintWriter out){
+      String[] req= request.trim().split(" ");
+      String filePath = req[8];
+      File file = new File(filePath);
+
+        try (FileInputStream fis = new FileInputStream(file);
+             BufferedInputStream bis = new BufferedInputStream(fis);
+        ){
+           out.println(file.getName());
+           out.println(file.length());
+
+              byte[] buffer = new byte[1024];
+                int bytesRead;
+                while ((bytesRead = bis.read(buffer)) != -1) {
+                    out.write(Arrays.toString(buffer), 0, bytesRead);
+                }
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+        }
+
+
 
     }
 }

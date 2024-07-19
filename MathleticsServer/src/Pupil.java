@@ -1,5 +1,6 @@
 
 import java.io.*;
+import java.net.Socket;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.*;
@@ -270,6 +271,26 @@ public class Pupil {
                 }
             }
         }catch(IOException e){
+            System.out.println(e.getMessage());
+        }
+    }
+
+    //receive and store image
+    public static void storeImage(String[] req, BufferedReader in, PrintWriter out, Socket soc) throws IOException{
+
+        File file = new File("PupilImages/"+req[1]+".jpeg");
+        long fileSize = Long.parseLong(in.readLine());
+
+        try (BufferedInputStream bis = new BufferedInputStream(soc.getInputStream());
+                BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(file))) {
+            byte[] buffer = new byte[1024];
+            int bytesRead;
+            long totalBytesRead = 0;
+            while (totalBytesRead < fileSize && (bytesRead = bis.read(buffer)) != -1) {
+                bos.write(buffer, 0, bytesRead);
+                totalBytesRead += bytesRead;
+            }
+        }catch (IOException e){
             System.out.println(e.getMessage());
         }
     }

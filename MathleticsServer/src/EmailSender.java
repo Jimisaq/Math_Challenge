@@ -41,7 +41,7 @@ public class EmailSender {
     }
 
     //send email to pupil after their registration has been confirmed
-    public static void notifyPupil(String recipient){
+    public static void notifyPupil(String recipient,String subject, String info){
 
         Session session = Session.getInstance(properties,new javax.mail.Authenticator(){
             protected PasswordAuthentication getPasswordAuthentication(){
@@ -52,8 +52,8 @@ public class EmailSender {
             MimeMessage message = new MimeMessage(session);
             message.setFrom(new InternetAddress(sender));
             message.addRecipient(MimeMessage.RecipientType.TO,new InternetAddress(recipient));
-            message.setSubject("Confirmation of Registration");
-            message.setText("Your registration has been confirmed, you can now log into the system to take part in the available challenges");
+            message.setSubject(subject);
+            message.setText(info);
             Transport.send(message);
             System.out.println("email sent succesfully...");
         }catch(MessagingException e){

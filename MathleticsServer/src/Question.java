@@ -109,7 +109,7 @@ public class Question {
 
                             printWriter.println("Incorrect!");
                             status = 'I';
-                            score -=1;
+                            score -=3;
 
                             if(ans.isEmpty()){
                                 printWriter.println("No answer supplied");

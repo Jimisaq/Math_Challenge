@@ -68,6 +68,22 @@ public class Model {
         }
         return true;
     }
+    //check if a pupil has already been rejected
+    public static boolean checkRejected(String name,String schoolRegNo) {
+        try (Connection con = Model.createConnection()) {
+            String sql = "select 1 from rejected where name = ? and school_reg_no = ?";
+            PreparedStatement st = con.prepareStatement(sql);
+            st.setString(1, name);
+            st.setString(2, schoolRegNo);
+            ResultSet rs = st.executeQuery();
+            if (rs.isBeforeFirst()) {
+                return true;
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return false;
+    }
 
     //get salt from database for a given user
     public static String getSalt(String username){

@@ -115,7 +115,10 @@ public class SchoolRepresentative {
                     out.println("You have confirmed " + pupil.getName());
 
                     //send email to pupil
-                    EmailSender.notifyPupil(pupil.getEmail());
+                    String subject = "Registration Confirmation";
+                    String info = "Congratulations " + pupil.getName() + " your registration has been confirmed"
+                            + " \nYou can now login to the system and start challenging your peers.";
+                    EmailSender.notifyPupil(pupil.getEmail(), subject, info);
 
                 } else if (accept.equals("n")) {
                     Model.updateRejected(pupil);
@@ -123,6 +126,10 @@ public class SchoolRepresentative {
                     out.println("You have rejected " + pupil.getName());
 
                     //send email to pupil
+                    String subject = "Registration Rejection";
+                    String info = "Hello "+pupil.getName()+", we regret to inform you that your registration has been rejected."
+                            + " \nPlease contact your school representative for more information.";
+                    EmailSender.notifyPupil(pupil.getEmail(), subject, info);
                 }
             } else {
                 System.out.println("confirming ...");

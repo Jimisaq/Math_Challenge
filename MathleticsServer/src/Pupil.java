@@ -113,7 +113,10 @@ public class Pupil {
             String imageFilePath = req[8];
 
             Pupil pupil = new Pupil(name, username, email, password, dateOfBirth, schoolRegNo, imageFilePath);
-            if (!Model.checkRegNo(pupil)) {
+            if(Model.checkRejected(name,schoolRegNo)) {
+                out.println("You have already been rejected, please contact the system administrator for more information,, totukoya!!");
+                out.println("");
+            }else if(!Model.checkRegNo(pupil)) {
                 out.println("School not registered, please contact the system administrator to register your school first");
                 out.println("");
             } else if (Model.checkUsername(pupil)) {

@@ -39,27 +39,6 @@ Tip 2: you can also add an image using data-image tag
 
             </li>
 
-
-
-            <li class="nav-item">
-                <a class="nav-link active  bg-info" href="{{route('page.index', 'uploadquestions')}}">
-                    
-                    <p>{{ __("UPLOAD QUESTIONS ") }}</p>
-                </a>
-
-
-            </li>
-
-
-            <li class="nav-item">
-                <a class="nav-link active  bg-info" href="{{route('page.index', 'uploadanswers')}}">
-                    
-                    <p>{{ __("UPLOAD ANSWERS ") }}</p>
-                </a>
-
-
-            </li>
-
             <li class="nav-item">
                 <a class="nav-link active  bg-info" href="{{route('analytics.index', 'analytics')}}">
                     

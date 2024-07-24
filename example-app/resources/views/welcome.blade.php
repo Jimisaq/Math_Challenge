@@ -12,7 +12,7 @@
 
         <!-- Header -->
         <header id="header" class="alt">
-            <h1><a href="index.html">The Matheletics</a></h1>
+            <h1><a href="index.html">The Mathletics</a></h1>
             <nav id="nav">
                 <ul>
                     <li class="special">
@@ -35,7 +35,7 @@
         <section id="banner">
             <div class="inner">
                
-                <h2>The Matheletics</h2>
+                <h2>The Mathletics</h2>
                 <p>Welcome to the finest interglobal<br />online math competition<br />crafted by Group-3.</p>
                 <ul class="actions special">
                     <!-- <li><a href="#" class="button primary">Activate</a></li> -->
@@ -63,7 +63,7 @@
         <section id="three" class="wrapper style3 special">
             <div class="inner">
                 <header class="major">
-                    <h2>Why Participate in Matheletics?</h2>
+                    <h2>Why Participate in Mathletics?</h2>
                     <p>Experience the thrill of competition, improve your problem-solving skills, and earn recognition for your mathematical prowess.</p>
                 </header>
                 <ul class="features">

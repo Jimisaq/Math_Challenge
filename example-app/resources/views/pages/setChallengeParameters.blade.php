@@ -9,9 +9,7 @@
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <style>
         /* Optional: Custom CSS for additional styling */
-        body {
-            padding: 20px;
-        }
+       
         .form-group {
             margin-bottom: 20px;
         }

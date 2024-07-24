@@ -27,7 +27,7 @@
 
                     if (distance < 0) {
                         clearInterval(x);
-                        element.innerHTML = "This challenge has expired";
+                        element.innerHTML = "Expired";
                     }
                 } else {
                     clearInterval(x);

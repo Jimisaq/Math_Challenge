@@ -1,4 +1,3 @@
-
 @extends('layouts.app', ['activePage' => 'dashboard', 'title' => 'Mathletics Challenge', 'navName' => 'Dashboard', 'activeButton' => 'laravel'])
 
 @section('content')
@@ -31,16 +30,21 @@
             text-align: center;
         }
         .charts {
-            padding: 20px;
+            width:100%;
+            padding: 10px;
         }
         .chart-container {
-            width: 45%;
+            background-color: white;
+            border-radius: 10px;
+            padding: 2%;
+            width: 50%;
             margin: auto;
             margin-bottom: 20px;
         }
-        .chart-container h3 {
+        .chart-container h6 {
             text-align: center;
             margin-bottom: 10px;
+            color: #3b3283;
         }
         .tables {
             padding: 20px;
@@ -80,21 +84,20 @@
             <h3>Most Correctly Answered Questions</h3>
             <p id="correct-questions">{{ $data['title']}}</p> <!-- Laravel: Display count of correctly answered questions -->
         </div>
+
         <div class="metric">
             <h3>Top Schools</h3>
             <p id="school-rankings">{{ $data['description'] }}</p> <!-- Laravel: Display count of top schools -->
-
-
         </div>
     </div>
 
     <div class="charts">
         <div class="chart-container">
-            <h3>Performance of Schools and Participants Over Time</h3>
+            <h6>Performance of Schools and Participants Over Time</h6>
             <canvas id="performanceChart"></canvas>
         </div>
         <div class="chart-container">
-            <h3>Percentage Repetition of Questions</h3>
+            <h6>Percentage Repetition of Questions</h6>
             <canvas id="questionRepetitionChart"></canvas>
         </div>
     </div>

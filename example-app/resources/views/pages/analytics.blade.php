@@ -6,8 +6,71 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>Analytics Dashboard</title>
+
+    <script>
+        function countdown(element, endDate) {
+            var countDownDate = new Date(endDate).getTime();
+
+            var x = setInterval(function() {
+                var now = new Date().getTime();
+                var distance = countDownDate - now;
+
+                var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+                var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+                if (element) {
+                    element.innerHTML = days + "d " + hours + "h " + minutes + "m " + seconds + "s ";
+
+                    if (distance < 0) {
+                        clearInterval(x);
+                        element.innerHTML = "This challenge has expired";
+                    }
+                } else {
+                    clearInterval(x);
+                }
+            }, 1000);
+        }
+        window.onload = function(){
+            document.querySelectorAll('.countdown').forEach(function(element){
+                countdown(element, element.getAttribute('data-end'));
+            });
+        }
+    </script>
+
+    <style>
+        table {
+            width: 100%;
+            margin-top: 20px;
+            background-color: white;
+            border: 1px solid #3B3283;
+            border-collapse: collapse;
+        }
+        thead{
+            color:white;
+            background-color: #595A96;
+            text-transform: uppercase;
+            font-size: small;
+            font-weight:lighter;
+        }
+        thead tr:hover{
+            background-color: #D2C8E3;
+            color:black;
+        }
+        th, td {
+            padding: 10px;
+            text-align: left;
+            border: 1px solid #3B3283;
+        }
+        tr:hover {
+            background-color: #EFEFF8;
+        }
+    </style>    
 </head>
+
 <body>
     <div class="container">
         <br>
@@ -16,7 +79,7 @@
 
     <h3> <u>Top participants per challenge</u> </h3>
 
-        <table border="1" width="50%">
+        <table border="1" width="70%">
             <thead>
                 <tr>
                     <th>Challenge Name</th>
@@ -43,7 +106,7 @@
 
     @else
         <div class="alert alert-warning" role="alert">
-            No data available.
+            No participant data available.
         </div>
     @endif
     <br>
@@ -51,14 +114,13 @@
     
     <div>
         @if (!empty($vchallenges))
-            <h3> <u>Valid challenges and time left</u> </h3>
 
             <div class="container">
         <h6><u>Challenge Countdown</u></h6>
         @foreach ($vchallenges as $vchallenge)
             <div class="challenge">
                 <h6>{{ $vchallenge['challengeid'] }}. {{ $vchallenge['challengename'] }}</h6>
-                <p>Ends in: <span id="countdown-{{ $vchallenge['enddate'],$vchallenge['challengeid'] }}"></span></p>
+                <p>Ends in: <span class="countdown" data-end="{{  $vchallenge['enddate'] }}"></span></p>
             </div>
         @endforeach
     </div>
@@ -71,42 +133,4 @@
     
 </body>
 </html>
-@endsection
-
-@section('scripts')
-    <script>
-        var challenges = json_encode($vchallenges);
-
-        function updateCountdown(endTime, elementId) {
-            var now = new Date().getTime();
-            var distance = endTime - now;
-
-            var days = Math.floor(distance / (1000 * 60 * 60 * 24));
-            var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-            var seconds = Math.floor((distance % (1000 * 60)) / 1000);
-
-            var countdownElement = document.getElementById(elementId);
-            if (countdownElement) {
-                countdownElement.textContent = days + "d " + hours + "h "
-                    + minutes + "m " + seconds + "s ";
-
-                if (distance < 0) {
-                    countdownElement.textContent = "Challenge expired";
-                }
-            }
-        }
-
-        function startCountdowns() {
-            challenges.forEach(function(vchallenge) {
-                var endTime = new Date(vchallenge.enddate).getTime();
-                var elementId = "countdown-" + challenge.id;
-                setInterval(function() {
-                    updateCountdown(endTime, elementId);
-                }, 1000);
-            });
-        }
-
-        window.onload = startCountdowns;
-    </script>
 @endsection

@@ -61,7 +61,7 @@ class AnalyticsController extends Controller
     {
         $validchallenges = DB::table('challenges')
         ->select('id', 'challenge_name', 'start_date', 'end_date')
-        ->orderBy('end_date')
+        ->orderByDesc('end_date')
         ->get();
 
         $vchallenges=[];

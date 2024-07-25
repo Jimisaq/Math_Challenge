@@ -32,7 +32,7 @@ public class Main {
             String finalRequest;
             //handle image file sending
             if (request.startsWith("register")) {
-                finalRequest = sendImageBase64(request);
+                finalRequest = sendImage(request);
                 out.println(finalRequest);
 
             } else{
@@ -70,10 +70,8 @@ public class Main {
         System.out.println(instructionSet);
 
     }
-}
-    //turn an image into a byte stream and send the bytestream to the server
   //send image to the server
-  public static String sendImageBase64(String request) throws IOException {
+  public static String sendImage(String request) throws IOException {
     String encodedString=null;
     String finalRequest = null;
     if (request.startsWith("register")) {

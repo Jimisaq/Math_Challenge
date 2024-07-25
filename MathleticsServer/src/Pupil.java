@@ -283,22 +283,21 @@ public class Pupil {
     }
 
     //receive and store image
-    public static void storeImage(String[] req, BufferedReader in, PrintWriter out, Socket soc) throws IOException{
+    public static String storeImage(String image,String username) throws IOException {
+        byte[] decodedBytes = Base64.getDecoder().decode(image);
 
-        File file = new File("PupilImages/"+req[1]+".jpeg");
-        long fileSize = Long.parseLong(in.readLine());
-
-        try (BufferedInputStream bis = new BufferedInputStream(soc.getInputStream());
-                BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(file))) {
-            byte[] buffer = new byte[1024];
-            int bytesRead;
-            long totalBytesRead = 0;
-            while (totalBytesRead < fileSize && (bytesRead = bis.read(buffer)) != -1) {
-                bos.write(buffer, 0, bytesRead);
-                totalBytesRead += bytesRead;
-            }
-        }catch (IOException e){
-            System.out.println(e.getMessage());
+        File directory = new File("ParticipantImages");
+        System.out.println(directory.getAbsolutePath());
+        if (!directory.exists()){
+            directory.mkdirs(); // This will create the directory if it does not exist
         }
+
+        String imageFilePath = "ParticipantImages/" + username + ".jpeg";
+        File file = new File(imageFilePath);
+
+        try (BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(file))) {
+            bos.write(decodedBytes);
+        }
+        return imageFilePath;
     }
 }

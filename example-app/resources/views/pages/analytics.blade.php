@@ -74,6 +74,19 @@
         tr:hover {
             background-color: #EFEFF8;
         }
+        h3{
+            text-transform: uppercase;
+            color:darkgreen; 
+            font-weight: bold;
+        }
+        h6{
+            text-transform: uppercase;
+            font-weight: bold;
+            color:darkgreen;
+        }
+        h5{
+            color:#28a745;
+        }
     </style>    
 </head>
 
@@ -131,7 +144,7 @@
         <h6><u>Challenge Countdown</u></h6>
         @foreach ($vchallenges as $vchallenge)
             <div class="challenge">
-                <h6>{{ $vchallenge['challengeid'] }}. {{ $vchallenge['challengename'] }}</h6>
+                <h5>{{ $vchallenge['challengeid'] }}. {{ $vchallenge['challengename'] }}</h5>
                 <p>Ends in: <span class="countdown" data-end="{{  $vchallenge['enddate'] }}"></span></p>
             </div>
         @endforeach

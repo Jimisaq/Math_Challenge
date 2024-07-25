@@ -40,9 +40,10 @@ class HomeController extends Controller
             //'validChallenges' => $validChallenges
         ];
 
-        $school= School::pluck('school_name');
 
-        return view('dashboard',compact('school'))->with('data', $data);
+        $schools= School::pluck('school_name');
+        
+        return view('dashboard',compact('schools'))->with('data', $data);
     }
 
 }

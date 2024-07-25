@@ -41,10 +41,12 @@
 
         }
         .chart-container {
-            /*width: 45%;*/
+            border-radius: 10px;
+            box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.2);
+            padding: 2%;
+            width: 50%;
             margin: auto;
             margin-bottom: 20px;
-            box-shadow:-5px 5px 20px 0 rgba(0, 0, 0, 0.74);
             background-color: white;
             height: 70vh;
         }
@@ -212,7 +214,7 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
         // Example data for performance charts
-        const sch = @json($school);
+        const sch = @json($schools);
         console.log('Performance:', performance);
 
         const performanceData = {

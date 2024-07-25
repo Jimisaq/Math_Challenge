@@ -5,7 +5,6 @@ Tip 1: You can change the color of the sidebar using: data-color="purple | blue 
 Tip 2: you can also add an image using data-image tag
 -->
     <div class="sidebar-wrapper">
-
         <div class="logo-container">
             <div class="logo-first-part">
                 MATH
@@ -14,7 +13,6 @@ Tip 2: you can also add an image using data-image tag
                 LETICS
             </div>
         </div>
-
         <ul class="nav">
             <li class="nav-item <?php if($activePage == 'dashboard'): ?> active <?php endif; ?>">
                 <a class="nav-link" href="<?php echo e(route('dashboard')); ?>">
@@ -25,24 +23,22 @@ Tip 2: you can also add an image using data-image tag
 
 
             <li class="nav-item">
-                <a class="nav-link active  bg-info" href="<?php echo e(route('page.index', 'uploadschools')); ?>">
-                    
-                    <p><?php echo e(__("UPLOAD SCHOOLS ")); ?></p>
+                <a class="nav-link active  bg-info" href="<?php echo e(route('schools.add')); ?>">
+
+                    <p><?php echo e(__("REGISTER SCHOOL")); ?></p>
                 </a>
             </li>
+
+
+
 
             <li class="nav-item">
                 <a class="nav-link active  bg-info" href="<?php echo e(route('page.index', 'setChallengeParameters')); ?>">
-                    
+
                     <p><?php echo e(__("SET CHALLENGE PARAMETERS ")); ?></p>
                 </a>
-            </li>
 
-            <li class="nav-item">
-                <a class="nav-link active  bg-info" href="<?php echo e(route('page.index', 'analytics')); ?>">
-                    
-                    <p><?php echo e(__("ANALYTICS")); ?></p>
-                </a>
+
             </li>
 
         </ul>

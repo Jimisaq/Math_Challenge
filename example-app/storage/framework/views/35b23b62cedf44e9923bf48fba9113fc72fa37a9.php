@@ -22,10 +22,10 @@
                                 <?php echo method_field('patch'); ?>
 
                                 <h6 class="heading-small text-muted mb-4"><?php echo e(__('User information')); ?></h6>
-                                
+
                                 <?php echo $__env->make('alerts.success', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
                                 <?php echo $__env->make('alerts.error_self_update', ['key' => 'not_allow_profile'], \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
-        
+
                                 <div class="pl-lg-4">
                                     <div class="form-group<?php echo e($errors->has('name') ? ' has-danger' : ''); ?>">
                                         <label class="form-control-label" for="input-name">
@@ -33,13 +33,13 @@
 
                                         </label>
                                         <input type="text" name="name" id="input-name" class="form-control<?php echo e($errors->has('name') ? ' is-invalid' : ''); ?>" placeholder="<?php echo e(__('Name')); ?>" value="<?php echo e(old('name', auth()->user()->name)); ?>" required autofocus>
-        
+
                                         <?php echo $__env->make('alerts.feedback', ['field' => 'name'], \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
                                     </div>
                                     <div class="form-group<?php echo e($errors->has('email') ? ' has-danger' : ''); ?>">
                                         <label class="form-control-label" for="input-email"><i class="w3-xxlarge fa fa-envelope-o"></i><?php echo e(__('Email')); ?></label>
                                         <input type="email" name="email" id="input-email" class="form-control<?php echo e($errors->has('email') ? ' is-invalid' : ''); ?>" placeholder="<?php echo e(__('Email')); ?>" value="<?php echo e(old('email', auth()->user()->email)); ?>" required>
-        
+
                                         <?php echo $__env->make('alerts.feedback', ['field' => 'email'], \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
                                     </div>
                                     <div class="text-center">
@@ -51,12 +51,12 @@
                             <form method="post" action="<?php echo e(route('profile.password')); ?>">
                                 <?php echo csrf_field(); ?>
                                 <?php echo method_field('patch'); ?>
-        
+
                                 <h6 class="heading-small text-muted mb-4"><?php echo e(__('Password')); ?></h6>
-        
+
                                 <?php echo $__env->make('alerts.success', ['key' => 'password_status'], \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
                                 <?php echo $__env->make('alerts.error_self_update', ['key' => 'not_allow_password'], \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
-        
+
                                 <div class="pl-lg-4">
                                     <div class="form-group<?php echo e($errors->has('old_password') ? ' has-danger' : ''); ?>">
                                         <label class="form-control-label" for="input-current-password">
@@ -64,7 +64,7 @@
 
                                         </label>
                                         <input type="password" name="old_password" id="input-current-password" class="form-control<?php echo e($errors->has('old_password') ? ' is-invalid' : ''); ?>" placeholder="<?php echo e(__('Current Password')); ?>" value="" required>
-        
+
                                         <?php echo $__env->make('alerts.feedback', ['field' => 'old_password'], \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
                                     </div>
                                     <div class="form-group<?php echo e($errors->has('password') ? ' has-danger' : ''); ?>">
@@ -73,7 +73,7 @@
 
                                         </label>
                                         <input type="password" name="password" id="input-password" class="form-control<?php echo e($errors->has('password') ? ' is-invalid' : ''); ?>" placeholder="<?php echo e(__('New Password')); ?>" value="" required>
-        
+
                                         <?php echo $__env->make('alerts.feedback', ['field' => 'password'], \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
                                     </div>
                                     <div class="form-group">
@@ -83,7 +83,7 @@
                                         </label>
                                         <input type="password" name="password_confirmation" id="input-password-confirmation" class="form-control" placeholder="<?php echo e(__('Confirm New Password')); ?>" value="" required>
                                     </div>
-        
+
                                     <div class="text-center">
                                         <button type="submit" class="btn btn-default mt-4"><?php echo e(__('Change password')); ?></button>
                                     </div>
@@ -95,12 +95,12 @@
                     <div class="col-md-4">
                         <div class="card card-user">
                             <div class="card-image">
-                                <img src="https://ununsplash.imgix.net/photo-1431578500526-4d9613015464?fit=crop&fm=jpg&h=300&q=75&w=400" alt="...">
+                                <img src="<?php echo e(asset('images/jimimage.jpeg')); ?>" alt="profile picture">
                             </div>
                             <div class="card-body">
                                 <div class="author">
                                     <a href="#">
-                                        <img class="avatar border-gray" src="<?php echo e(asset('light-bootstrap/img/faces/face-3.jpg')); ?>" alt="...">
+                                        <img class="avatar border-gray" src="<?php echo e(asset('images/jimimage.jpeg')); ?>" alt="...">
                                         <h5 class="title"><?php echo e(auth()->user()->name); ?></h5>
                                     </a>
                                     <p class="description">

@@ -14,7 +14,7 @@ class AnalyticsController extends Controller
     {
         $challenges = AnalyticsController::getTopTwoParticipants();
         $vchallenges = AnalyticsController::displayChallenges();
-        return view('pages.analytics', compact('challenges','vchallenges'));
+        return view('welcome', compact('challenges','vchallenges'));
     }
 
     public function getTopTwoParticipants()

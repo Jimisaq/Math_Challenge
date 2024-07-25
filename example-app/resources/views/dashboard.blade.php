@@ -36,6 +36,7 @@
         .chart-container {
             background-color: white;
             border-radius: 10px;
+            box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.2);
             padding: 2%;
             width: 50%;
             margin: auto;

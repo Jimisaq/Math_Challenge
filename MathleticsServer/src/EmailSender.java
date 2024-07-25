@@ -1,14 +1,17 @@
 import javax.mail.*;
 import javax.mail.internet.*;
+import javax.mail.util.ByteArrayDataSource;
+
 import com.itextpdf.text.*;
 import com.itextpdf.text.pdf.*;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.util.*;
 import java.util.List;
-import java.util.Properties;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.*;
 
 public class EmailSender {
     static String sender = "jimisaac8082@gmail.com";
@@ -20,6 +23,8 @@ public class EmailSender {
         properties.put("mail.smtp.port", "587");
         properties.put("mail.smtp.ssl.protocols", "TLSv1.2");
     }
+
+    private static final ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor();
 
     public static void notifySchoolRep(String schoolRegNo, String pupilName) {
         String recipient = Model.getSchoolRepEmail(schoolRegNo);
@@ -63,7 +68,16 @@ public class EmailSender {
         }
     }
 
-    private static final ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor();
+    public static void scheduleChallengeReport(String recipient, List<ChallengeAttempt> attempts, LocalDateTime expiryTime) {
+        long delay = calculateDelay(expiryTime);
+
+        scheduler.schedule(() -> sendChallengeReport(recipient, attempts), delay, TimeUnit.MILLISECONDS);
+    }
+
+    private static long calculateDelay(LocalDateTime expiryTime) {
+        LocalDateTime now = LocalDateTime.now();
+        return java.time.Duration.between(now, expiryTime).toMillis();
+    }
 
     public static void sendChallengeReport(String recipient, List<ChallengeAttempt> attempts) {
         ByteArrayOutputStream pdfOutputStream = new ByteArrayOutputStream();
@@ -105,7 +119,6 @@ public class EmailSender {
 
             MimeBodyPart attachmentBodyPart = new MimeBodyPart();
             ByteArrayInputStream pdfInputStream = new ByteArrayInputStream(pdfOutputStream.toByteArray());
-            attachmentBodyPart.attachFile("challenge-report.pdf");
             attachmentBodyPart.setDataHandler(new DataHandler(new ByteArrayDataSource(pdfInputStream, "application/pdf")));
             attachmentBodyPart.setFileName("challenge-report.pdf");
 

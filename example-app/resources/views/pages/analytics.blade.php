@@ -48,6 +48,18 @@
     </script>
 
     <style>
+        .table-card{
+            background-color: white;
+            padding:2%;
+            border-radius: 10px;
+            box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.2);
+        }
+        .card{
+            background-color: white;
+            padding:2%;
+            border-radius: 10px;
+            box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.2);
+        }
         table {
             width: 100%;
             margin-top: 20px;
@@ -74,6 +86,14 @@
         tr:hover {
             background-color: #EFEFF8;
         }
+        h3{
+            text-transform: uppercase;
+            color:#17a2b8 ; 
+            font-weight: bold;
+        }
+        h5{
+            color:#28a745;
+        }
     </style>    
 </head>
 
@@ -87,7 +107,9 @@
 
     @if (!empty($challenges))
 
-    <h3> <u>Top participants per challenge</u> </h3>
+    <div class="table-card">
+
+        <h3> <u>Top participants per challenge</u> </h3>
 
         <table border="1" width="70%">
             <thead>
@@ -119,21 +141,24 @@
             No participant data available.
         </div>
     @endif
+    </div>
     <br>
 
     <!--
          * Displays the challenge countdown timers.
     -->
-    <div>
+    <div class="card">
         @if (!empty($vchallenges))
 
             <div class="container">
-        <h6><u>Challenge Countdown</u></h6>
+        <h3><u>Challenge Countdown</u></h3>
+        <br>
         @foreach ($vchallenges as $vchallenge)
             <div class="challenge">
-                <h6>{{ $vchallenge['challengeid'] }}. {{ $vchallenge['challengename'] }}</h6>
+                <h5>{{ $vchallenge['challengeid'] }}. {{ $vchallenge['challengename'] }}</h5>
                 <p>Ends in: <span class="countdown" data-end="{{  $vchallenge['enddate'] }}"></span></p>
             </div>
+            <hr>
         @endforeach
     </div>
         @else

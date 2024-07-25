@@ -36,8 +36,6 @@ Tip 2: you can also add an image using data-image tag
 
                     <p>{{ __("SET CHALLENGE PARAMETERS ") }}</p>
                 </a>
-
-
             </li>
 
             <li class="nav-item">

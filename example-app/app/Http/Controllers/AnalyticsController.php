@@ -49,7 +49,7 @@ class AnalyticsController extends Controller
             
             $challengeEndDate = Carbon::parse($participant->end_date);
             
-            if ($challengeEndDate->isPast()) {
+            if ($challengeEndDate < now()) {
                 $challenges[$challengeNo]['expired'] = true;
             }
             

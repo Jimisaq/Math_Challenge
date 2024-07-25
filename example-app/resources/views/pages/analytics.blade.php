@@ -1,4 +1,4 @@
-@extends('layouts.app', ['activePage' => 'dashboard', 'title' => 'Matheletics Challenge', 'navName' => 'Analytics', 'activeButton' => 'laravel'])
+@extends('layouts.app', ['activePage' => 'dashboard', 'title' => 'Mathletics Challenge', 'navName' => 'Analytics', 'activeButton' => 'laravel'])
 
 @section('content')
 <!DOCTYPE html>
@@ -9,6 +9,9 @@
 
     <title>Analytics Dashboard</title>
 
+    <!--
+     * Script to handle countdown timer for challenges.
+    -->
     <script>
         function countdown(element, endDate) {
             var countDownDate = new Date(endDate).getTime();
@@ -34,6 +37,9 @@
                 }
             }, 1000);
         }
+        /**
+         * Initializes the countdown timers for all challenges on page load.
+         */
         window.onload = function(){
             document.querySelectorAll('.countdown').forEach(function(element){
                 countdown(element, element.getAttribute('data-end'));
@@ -46,12 +52,12 @@
             width: 100%;
             margin-top: 20px;
             background-color: white;
-            border: 1px solid #3B3283;
+            border: 1px solid #28a745;
             border-collapse: collapse;
         }
         thead{
             color:white;
-            background-color: #595A96;
+            background-color: #28a745;
             text-transform: uppercase;
             font-size: small;
             font-weight:lighter;
@@ -63,7 +69,7 @@
         th, td {
             padding: 10px;
             text-align: left;
-            border: 1px solid #3B3283;
+            border: 1px solid #28a745;
         }
         tr:hover {
             background-color: #EFEFF8;
@@ -74,6 +80,10 @@
 <body>
     <div class="container">
         <br>
+
+        <!--
+         * Displays the top participants per challenge.
+        -->
 
     @if (!empty($challenges))
 
@@ -111,7 +121,9 @@
     @endif
     <br>
 
-    
+    <!--
+         * Displays the challenge countdown timers.
+    -->
     <div>
         @if (!empty($vchallenges))
 

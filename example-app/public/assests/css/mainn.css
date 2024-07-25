@@ -3351,8 +3351,8 @@ input, select, textarea {
 		-ms-transition: -ms-transform 0.5s ease;
 		transition: transform 0.5s ease;
 		-webkit-overflow-scrolling: touch;
-		background: #ed4933;
-		color: #ffffff;
+		background: #AC9C8D;
+		color: white;
 		height: 100%;
 		max-width: 80%;
 		overflow-y: auto;
@@ -3374,6 +3374,12 @@ input, select, textarea {
 				margin: 0.5em 0 0 0;
 				padding: 0.5em 0 0 0;
 			}
+
+			#menu ul > li > a:hover {
+				color:black;
+				font-size: 0.9em;
+			}
+
 
 				#menu ul > li:first-child {
 					border-top: 0 !important;

@@ -1,4 +1,4 @@
-@extends('layouts/app', ['activePage' => 'login', 'title' => 'Matheletics Challenge'])
+@extends('layouts/app', ['activePage' => 'login', 'title' => 'Mathletics Challenge'])
 
 @section('content')
     <div class="full-page section-image" data-color="black" data-image="{{ asset('light-bootstrap/img/download2.jpeg') }}">

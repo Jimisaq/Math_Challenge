@@ -1,4 +1,4 @@
-<!-- 
+<!--
 =========================================================
  Light Bootstrap Dashboard - v2.0.1
 =========================================================
@@ -30,24 +30,25 @@
         <link href="<?php echo e(asset('light-bootstrap/css/light-bootstrap-dashboard.css?v=2.0.0')); ?> " rel="stylesheet" />
         <!-- CSS Just for demo purpose, don't include it in your project -->
         <link href="<?php echo e(asset('light-bootstrap/css/demo.css')); ?>" rel="stylesheet" />
+        <link href="<?php echo e(asset('css/app.css')); ?>" rel="stylesheet">
     </head>
 
     <body>
-        <div class="wrapper <?php if(!auth()->check() || request()->route()->getName() == ""): ?> wrapper-full-page <?php endif; ?>">
+        <div class="wrapper <?php if(!auth()->check() || request()->route()->getName() == ""): ?> wrapper-full-page <?php endif; ?> rounded">
 
             <?php if(auth()->check() && request()->route()->getName() != ""): ?>
                 <?php echo $__env->make('layouts.navbars.sidebar', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
-                
+
             <?php endif; ?>
 
-            <div class="<?php if(auth()->check() && request()->route()->getName() != ""): ?> main-panel <?php endif; ?>">
+            <div class=" <?php if(auth()->check() && request()->route()->getName() != ""): ?> main-panel <?php endif; ?>">
                 <?php echo $__env->make('layouts.navbars.navbar', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
                 <?php echo $__env->yieldContent('content'); ?>
                 <?php echo $__env->make('layouts.footer.nav', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
             </div>
 
         </div>
-       
+
 
 
     </body>
@@ -72,7 +73,7 @@
     <?php echo $__env->yieldPushContent('js'); ?>
     <script>
       $(document).ready(function () {
-        
+
         $('#facebook').sharrre({
           share: {
             facebook: true
@@ -124,4 +125,5 @@
         });
       });
     </script>
-</html><?php /**PATH C:\Users\mable\Desktop\Math_Challenge\example-app\resources\views/layouts/app.blade.php ENDPATH**/ ?>
+</html>
+<?php /**PATH C:\Users\mable\Desktop\Math_Challenge\example-app\resources\views/layouts/app.blade.php ENDPATH**/ ?>

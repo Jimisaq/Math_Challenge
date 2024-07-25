@@ -9,9 +9,7 @@
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <style>
         /* Optional: Custom CSS for additional styling */
-        body {
-            padding: 20px;
-        }
+       
         .form-group {
             margin-bottom: 20px;
         }
@@ -19,7 +17,6 @@
 </head>
 <body>
     <div class="container">
-        <h1 class="mb-4">Setup Challenge</h1>
 
         <?php if(session('success')): ?>
             <div class="alert alert-success">
@@ -75,7 +72,7 @@
                         <input type="file" class="form-control" id="answer_file" name="answer_file" accept=".xlsx" required>
                     </div>
 
-                    <button type="submit" class="btn btn-primary">Set Challenge</button>
+                    <button type="submit" class="btn btn-primary bg-info">Set Challenge</button>
                 </form>
             </div>
         </div>
@@ -106,4 +103,5 @@
 </body>
 </html>
 <?php $__env->stopSection(); ?>
+
 <?php echo $__env->make('layouts.app', ['activePage' => 'dashboard', 'title' => 'Mathletics Challenge', 'navName' => 'Set Challenge Parameters', 'activeButton' => 'laravel'], \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\Users\mable\Desktop\Math_Challenge\example-app\resources\views/pages/setChallengeParameters.blade.php ENDPATH**/ ?>

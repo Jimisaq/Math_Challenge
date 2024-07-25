@@ -26,7 +26,7 @@ class QuestionImport implements ToModel, WithHeadingRow
 //            'challenge_no' => $this->challenge_no,
 //        ]);
         Question::create([
-            'id' => $row['no'],
+            'question_no' => $row['no'],
             'question_text' => $row['question'],
             'challenge_no' => $this->challenge_no,
         ]

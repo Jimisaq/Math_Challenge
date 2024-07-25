@@ -1,7 +1,13 @@
 import java.io.*;
 import java.net.Socket;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Arrays;
+import java.util.Base64;
 import java.util.Scanner;
+
+import javax.imageio.ImageIO;
 
 public class Main {
     public static void main(String[] args) {
@@ -51,7 +57,7 @@ public class Main {
 
     public static void showMenu(){
         String instructionSet= """
-                                            **WELCOME TO IES MATH CHALLENGE SYSTEM**
+                                            **WELCOME TO MATHELETICS CHALLENGE SYSTEM**
                 Available commands:
                 _______________________________________________________________________________________________________________________
                 >register <username> <firstname> <lastname> <email> <password> <DateOfBirth> <school_reg_no> <imageFile.png> to register
@@ -63,27 +69,23 @@ public class Main {
 
     }
     //turn an image into a byte stream and send the bytestream to the server
-    public static void sendImage(String request, PrintWriter out){
-      String[] req= request.trim().split(" ");
-      String filePath = req[8];
-      File file = new File(filePath);
-
-        try (FileInputStream fis = new FileInputStream(file);
-             BufferedInputStream bis = new BufferedInputStream(fis);
-        ){
-           out.println(file.getName());
-           out.println(file.length());
-
-              byte[] buffer = new byte[1024];
-                int bytesRead;
-                while ((bytesRead = bis.read(buffer)) != -1) {
-                    out.write(Arrays.toString(buffer), 0, bytesRead);
-                }
-        } catch (IOException e) {
-            System.out.println(e.getMessage());
+  //send image to the server
+  public static String sendImageBase64(String request) throws IOException {
+    String encodedString=null;
+    String finalRequest = null;
+    if (request.startsWith("register")) {
+        String[] req = request.split(" ");
+        if (req.length == 9) {
+            String imageFile = req[8];
+            File file = new File(imageFile);
+            byte[] fileContent = Files.readAllBytes(file.toPath());
+            encodedString = Base64.getEncoder().encodeToString(fileContent);;
+            finalRequest = req[0] + " "+req[1] + " "+req[2] + " "+req[3] + " "+req[4] + " "+req[5] + " " +req[6] + " "+req[7] + " "+ encodedString;
         }
-
-
+    }
+    return finalRequest;
+    }
+    
 
     }
-}
+

@@ -41,12 +41,6 @@ Tip 2: you can also add an image using data-image tag
 
             </li>
 
-            <li class="nav-item">
-                <a class="nav-link active  bg-info" href="<?php echo e(route('analytics.index', 'analytics')); ?>">
-
-                    <p><?php echo e(__("ANALYTICS")); ?></p>
-                </a>
-            </li>
         </ul>
     </div>
 </div>

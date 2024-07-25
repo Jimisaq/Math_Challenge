@@ -20,8 +20,7 @@ Route::get('/', function () {
 
 use App\Http\Controllers\AnalyticsController;
 
-Route::get('/analytics', [AnalyticsController::class,'index'])->name('analytics.index');
-
+Route::get('/', [AnalyticsController::class,'index'])->name('cards.index');
 
 Auth::routes();
 

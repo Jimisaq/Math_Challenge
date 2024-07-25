@@ -1827,7 +1827,7 @@ fieldset[disabled] .form-control {
     border-bottom-width: 1px;
     font-size: 12px;
     text-transform: uppercase;
-    color: #9A9A9A;
+    /*color: #9A9A9A;*/
     font-weight: 400;
     padding-bottom: 5px;
     border-top: none !important;

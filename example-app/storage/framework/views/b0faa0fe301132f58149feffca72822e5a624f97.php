@@ -37,8 +37,6 @@ Tip 2: you can also add an image using data-image tag
 
                     <p><?php echo e(__("SET CHALLENGE PARAMETERS ")); ?></p>
                 </a>
-
-
             </li>
 
         </ul>

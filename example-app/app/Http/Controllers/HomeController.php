@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Challenge;
+use App\Models\Participant;
 use App\Models\School;
 use Illuminate\Http\Request;
 
@@ -24,15 +26,23 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $data = array(
-            'title' => 'Dashboard',
-            'description' => 'This is the dashboard page'
+        //get the total number of schools in the database
+        $totalSchools = School::count();
+        //Total number of participants
+        $totalParticipants = Participant::count();
+        //Valid challenges
+        //$validChallenges = Challenge::where('status', 'valid')->count();
 
-        );
+        //store variables in an array
+        $data = [
+            'totalSchools' => $totalSchools,
+            'totalParticipants' => $totalParticipants,
+            //'validChallenges' => $validChallenges
+        ];
 
         $school= School::pluck('school_name');
-        
+
         return view('dashboard',compact('school'))->with('data', $data);
     }
-   
+
 }

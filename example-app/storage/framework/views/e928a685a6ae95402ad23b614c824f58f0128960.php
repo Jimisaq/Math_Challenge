@@ -1,6 +1,6 @@
-@extends('layouts.app', ['activePage' => 'dashboard', 'title' => 'Mathletics Challenge', 'navName' => 'Dashboard', 'activeButton' => 'laravel'])
 
-@section('content')
+
+<?php $__env->startSection('content'); ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -10,6 +10,7 @@
     <style>
         body {
             font-family: Arial, sans-serif;
+            background-color: #f9f9f9;
             margin: 0;
             padding: 0;
         }
@@ -23,35 +24,27 @@
             flex: 1;
             margin: 10px;
             padding: 20px;
-            background-color: lightslategray;
-            color: white;
-            box-shadow: 0 8px 6px -6px black;
-            border-bottom: 1px solid #ddd;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background-color: #ffffff;
+            border: 1px solid #ddd;
             border-radius: 8px;
             text-align: center;
-        }
-        .metric:hover{
-            background-color: #4CAF50;
         }
         .charts {
             width:100%;
             padding: 10px;
-            height: auto;
-
         }
         .chart-container {
-            /*width: 45%;*/
+            background-color: white;
+            border-radius: 10px;
+            padding: 2%;
+            width: 50%;
             margin: auto;
             margin-bottom: 20px;
-            box-shadow:-5px 5px 20px 0 rgba(0, 0, 0, 0.74);
-            background-color: white;
-            height: 70vh;
         }
         .chart-container h6 {
             text-align: center;
             margin-bottom: 10px;
-
+            color: #3b3283;
         }
         .tables {
             padding: 20px;
@@ -82,51 +75,31 @@
         .filters select, .filters input {
             margin-right: 20px;
         }
-        .chart-container canvas {
-           height: 80% !important;
-           width: 80% !important;
-            bottom: 0;
-        }
     </style>
 </head>
 <body>
 
     <div class="overview">
         <div class="metric">
-            <h3>Total Number of Schools</h3>
-            <p id="correct-questions">{{ $data['totalSchools']}}</p> <!-- Laravel: Display count of correctly answered questions -->
-        </div>
-        <div class="metric">
-            <h3>Total Participants</h3>
-            <p id="correct-questions">{{ $data['totalParticipants']}}</p> <!-- Laravel: Display count of correctly answered questions -->
+            <h3>Most Correctly Answered Questions</h3>
+            <p id="correct-questions"><?php echo e($data['title']); ?></p> <!-- Laravel: Display count of correctly answered questions -->
         </div>
 
         <div class="metric">
-            <h3>Available Challenges</h3>
-{{--            <p id="school-rankings">{{ $data['validChallenges'] }}</p> <!-- Laravel: Display count of top schools -->--}}
-
-
+            <h3>Top Schools</h3>
+            <p id="school-rankings"><?php echo e($data['description']); ?></p> <!-- Laravel: Display count of top schools -->
         </div>
     </div>
 
-    <div class="container charts">
-        <div class="row">
-            <div class="col-lg-5 chart-container">
-                <h3>Performance of Schools and Participants Over Time</h3>
-                <canvas id="performanceChart"></canvas>
-            </div>
-            <div class="col-lg-5 chart-container">
-                <h3>Percentage Repetition of Questions</h3>
-                <canvas id="questionRepetitionChart"></canvas>
-            </div>
+    <div class="charts">
+        <div class="chart-container">
+            <h6>Performance of Schools and Participants Over Time</h6>
+            <canvas id="performanceChart"></canvas>
         </div>
-        <div>
-            <div class="col-lg-8 chart-container pt-3">
-                <h3>School Rankings</h3>
-                <canvas></canvas>
-            </div>
+        <div class="chart-container">
+            <h6>Percentage Repetition of Questions</h6>
+            <canvas id="questionRepetitionChart"></canvas>
         </div>
-
     </div>
 
     <div class="tables">
@@ -212,14 +185,14 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
         // Example data for performance charts
-        const sch = @json($school);
+        const sch = <?php echo json_encode($school, 15, 512) ?>;
         console.log('Performance:', performance);
 
         const performanceData = {
             labels: ['2020', '2021', '2022', '2023'],
             datasets: [
                 {
-
+                  
                     label: sch[0],
                     data: [75, 85, 80, 90],
                     borderColor: 'rgba(255, 99, 132, 1)',
@@ -236,7 +209,7 @@
                     tension: 0.1
                 },
                 {
-                    label: sch[2],
+                    label: sch[1],
                     data: [65, 50, 35, 83],
                     borderColor: 'rgba(34, 162, 235, 1)',
                     backgroundColor: 'rgba(54, 162, 235, 0.2)',
@@ -289,7 +262,7 @@
                             display: true,
                             text: 'Performance'
                         },
-
+                        
                         beginAtZero: true
                     }
                 }
@@ -344,7 +317,7 @@
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    'X-CSRF-TOKEN': '<?php echo e(csrf_token()); ?>'
                 },
                 body: JSON.stringify({ date, category })
             })
@@ -394,4 +367,6 @@
         });
     </script>
 </body>
-@endsection
+<?php $__env->stopSection(); ?>
+```
+<?php echo $__env->make('layouts.app', ['activePage' => 'dashboard', 'title' => 'Mathletics Challenge', 'navName' => 'Dashboard', 'activeButton' => 'laravel'], \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\Users\mable\Desktop\Math_Challenge\example-app\resources\views/dashboard.blade.php ENDPATH**/ ?>

@@ -1,6 +1,6 @@
-<nav class="navbar navbar-expand-lg" color-on-scroll="500">  
+<nav class="navbar navbar-expand-lg mb-2 p-0 bg-info auth-navbar " color-on-scroll="500">
     <div class="container-fluid">
-        <a class="navbar-brand" href="#"> {{ $navName }} </a>
+        <a class="navbar-brand text-white fw-bolder" href="#"> {{ $navName }} </a>
         <button href="" class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" aria-controls="navigation-index" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-bar burger-lines"></span>
             <span class="navbar-toggler-bar burger-lines"></span>
@@ -28,17 +28,21 @@
                         <a class="dropdown-item" href="#">{{ __('Another notification') }}</a>
                     </ul>
                 </li> -->
-                <!-- <li class="nav-item">
-                    <a href="#" class="nav-link">
-                        <i class="nc-icon nc-zoom-split"></i>
-                        <span class="d-lg-block">&nbsp;{{ __('Search') }}</span>
-                    </a>
-                </li> -->
+{{--                 <li class="nav-item">--}}
+{{--                    <a href="#" class="nav-link">--}}
+{{--                        <i class="nc-icon nc-zoom-split"></i>--}}
+{{--                        <span class="d-lg-block">&nbsp;{{ __('Search') }}</span>--}}
+{{--                    </a>--}}
+{{--                </li>--}}
             </ul>
             <ul class="navbar-nav   d-flex align-items-center">
-                <li class="nav-item" >
-                    <a class="nav-link" href=" {{route('profile.edit') }} ">
-                        <span class="no-icon">{{ __('Account') }}</span>
+                <li class="nav-item">
+                    <a class="nav-link text-white" href=" {{route('profile.edit') }} ">
+                        <!-- Profile Picture -->
+                        <img src="{{ asset('images/jimimage.jpeg') }}" alt="Profile Picture" style="width: 40px; height: 40px; border-radius: 50%;">
+
+                        <!-- Username -->
+                        <span>{{ auth()->user()->name }}</span>
                     </a>
                 </li>
                 <!-- <li class="nav-item dropdown">
@@ -65,3 +69,4 @@
         </div>
     </div>
 </nav>
+

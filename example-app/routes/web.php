@@ -31,6 +31,10 @@ Auth::routes();
 
 Route::get('/home', 'App\Http\Controllers\HomeController@index')->name('dashboard');
 
+//register school form
+Route::get('/addschool', 'App\Http\Controllers\AddSchoolController@index')->name('schools.add');
+Route::post('/addschool','App\Http\Controllers\AddSchoolController@storeSchool')->name('schools.store');
+
 Route::group(['middleware' => 'auth'], function () {
 	Route::resource('user', 'App\Http\Controllers\UserController', ['except' => ['show']]);
 	Route::get('profile', ['as' => 'profile.edit', 'uses' => 'App\Http\Controllers\ProfileController@edit']);
@@ -43,11 +47,11 @@ Route::group(['middleware' => 'auth'], function () {
 });
 
 
- use App\Http\Controllers\SchoolController;
+// use App\Http\Controllers\SchoolController;
+//
+// Route::get('/uploadschools', [SchoolController::class, 'create'])->name('schools.create');
+// Route::post('/uploadschools', [SchoolController::class, 'store'])->name('schools.store');
 
- Route::get('/uploadschools', [SchoolController::class, 'create'])->name('schools.create');
- Route::post('/uploadschools', [SchoolController::class, 'store'])->name('schools.store');
- 
 
 use App\Http\Controllers\ChallengeController;
 

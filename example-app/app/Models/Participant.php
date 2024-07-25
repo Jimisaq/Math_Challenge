@@ -7,6 +7,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class Participant extends Model
 {
-    protected $table = 'participants'; 
+    protected $table = 'participant';
     protected $primaryKey = 'id';
 }

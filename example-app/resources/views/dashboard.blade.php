@@ -132,7 +132,7 @@
 
                 <div class="metric">
                     <h3>Available Challenges</h3>
-                    <p id="school-rankings">{{ $data['validChallenges'] }}</p> <!-- Laravel: Display count of top schools -->--}}
+                    {{-- <p id="school-rankings">{{ $data['validChallenges'] }}</p> <!-- Laravel: Display count of top schools -->--}}
 
 
                 </div>
@@ -146,21 +146,17 @@
                             <div class="card-header p-3 pt-2" >
                             
 
-                                <div class="text-start pt-4">
+                                <div class="text-start pt-3">
                                
-                                    <center><h1 class="mb-13">WELCOME TO THE MATHLETICS CHALLENGE</h1></center>
+                                    <center><h2 class="mb-8">THE MATHLETICS CHALLENGE</h2></center>
+                                    
+                                    <h4 class="mb-0"><center> <b>COURTESY OF THE INTERNATIONAL EDUCATION SERVICES _IES </b></center></h4>
+                                    <!-- <h4 class="mb-0"><center> PROVIDING THE BEST CHALLENGES FOR PRIMARY SCHOOL PUPILS</center></h4> -->
+
                                    
                                 </div>
                             </div>
 
-                            <hr class="dark horizontal ">
-
-                            <div class="card-footer p-3">
-
-                                <h3 class="mb-0"><center> <b> THE INTERNATIONAL EDUCATION SERVICES _IES</b></center></h3>
-                                <h3 class="mb-0"><center> PROVIDING THE BEST CHALLENGES FOR PRIMARY SCHOOL PUPILS</center></h3>
-
-                            </div>
                         </div>
                     </div>
                 </div>

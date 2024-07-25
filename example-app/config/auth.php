@@ -73,6 +73,23 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | API Guard
+    |--------------------------------------------------------------------------
+    |
+    | Here you may specify the API guard configuration. This guard uses the
+    | token driver and the administrators provider to authenticate users.
+    |
+    | You can add more guards as needed for your application.
+    |
+    */
+    'api' => [
+        'driver' => 'token',
+        'provider' => 'administrators', // Change to 'administrators'
+    ],
+
+
+    /*
+    |--------------------------------------------------------------------------
     | Resetting Passwords
     |--------------------------------------------------------------------------
     |

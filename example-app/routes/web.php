@@ -80,3 +80,8 @@ use App\Http\Controllers\ParticipantController;
 
 Route::get('/participants', [ParticipantController::class, 'index'])->name('participants.index');
 Route::get('/participants/{id}', [ParticipantController::class, 'show'])->name('participants.show');
+
+use App\Http\Controllers\ViewChartsController;
+
+Route::get('/viewcharts', [ViewChartsController::class, 'index'])->name('viewcharts.index');
+Route::get('/viewcharts', [ViewChartsController::class, 'calculateRankings'])->name('viewcharts.show');

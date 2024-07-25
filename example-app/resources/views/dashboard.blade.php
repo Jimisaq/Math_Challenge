@@ -185,7 +185,7 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
         // Example data for performance charts
-        const sch = @json($school);
+        const sch = @json($schools);
         console.log('Performance:', performance);
 
         const performanceData = {

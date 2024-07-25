@@ -30,9 +30,9 @@ class HomeController extends Controller
 
         );
 
-        $school= School::pluck('school_name');
+        $schools= School::pluck('school_name');
         
-        return view('dashboard',compact('school'))->with('data', $data);
+        return view('dashboard',compact('schools'))->with('data', $data);
     }
    
 }

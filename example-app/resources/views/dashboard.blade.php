@@ -132,7 +132,7 @@
 
                 <div class="metric">
                     <h3>Available Challenges</h3>
-                    <p id="school-rankings">{{ $data['validChallenges'] }}</p> <!-- Laravel: Display count of top schools -->--}}
+                    <p id="school-rankings">{{ $data['validChallenges'] }}</p> Laravel: Display count of top schools
 
 
                 </div>

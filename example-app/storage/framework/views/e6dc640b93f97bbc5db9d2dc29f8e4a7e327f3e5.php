@@ -1,7 +1,7 @@
 <!DOCTYPE HTML>
 <html>
 <head>
-    <title>The Matheletics</title>
+    <title>The Mathletics</title>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
     <link rel="stylesheet" href="/assests/css/mainn.css" />
@@ -23,7 +23,7 @@
                                 <!-- <li><a href="generic.html">About</a></li>
                                 <li><a href="elements.html">Rules</a></li>
                                 <li><a href="#">Sign Up</a></li> -->
-                                <li><a href={{ route('login') }}>Log In</a></li>
+                                <li><a href=<?php echo e(route('login')); ?>>Log In</a></li>
                             </ul>
                         </div>
                     </li>
@@ -135,4 +135,4 @@
     <script src="/assests/js/main.js"></script>
 
 </body>
-</html>
+</html><?php /**PATH C:\Users\mable\Desktop\Math_Challenge\example-app\resources\views/welcome.blade.php ENDPATH**/ ?>

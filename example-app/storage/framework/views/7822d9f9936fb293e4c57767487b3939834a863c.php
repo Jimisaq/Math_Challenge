@@ -1,6 +1,6 @@
-@extends('layouts.app', ['activePage' => 'dashboard', 'title' => 'Mathletics Challenge', 'navName' => 'Analytics', 'activeButton' => 'laravel'])
 
-@section('content')
+
+<?php $__env->startSection('content'); ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -85,7 +85,7 @@
          * Displays the top participants per challenge.
         -->
 
-    @if (!empty($challenges))
+    <?php if(!empty($challenges)): ?>
 
     <h3> <u>Top participants per challenge</u> </h3>
 
@@ -99,50 +99,51 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach ($challenges as $challengeNo => $challenge)
-                    @foreach ($challenge['participants'] as $key => $participant)
+                <?php $__currentLoopData = $challenges; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $challengeNo => $challenge): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                    <?php $__currentLoopData = $challenge['participants']; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $key => $participant): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                         <tr>
-                            @if ($key === 0)
-                                <td rowspan="{{ count($challenge['participants']) }}">{{ $challenge['challenge_name'] }}</td>
-                            @endif
-                            <td>{{ $participant['participant_name'] }}</td>
-                            <td>{{ $participant['school_name'] }}</td>
-                            <td>{{ $participant['score'] }}</td>
+                            <?php if($key === 0): ?>
+                                <td rowspan="<?php echo e(count($challenge['participants'])); ?>"><?php echo e($challenge['challenge_name']); ?></td>
+                            <?php endif; ?>
+                            <td><?php echo e($participant['participant_name']); ?></td>
+                            <td><?php echo e($participant['school_name']); ?></td>
+                            <td><?php echo e($participant['score']); ?></td>
                         </tr>
-                    @endforeach
-                @endforeach
+                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
             </tbody>
         </table>
 
-    @else
+    <?php else: ?>
         <div class="alert alert-warning" role="alert">
             No participant data available.
         </div>
-    @endif
+    <?php endif; ?>
     <br>
 
     <!--
          * Displays the challenge countdown timers.
     -->
     <div>
-        @if (!empty($vchallenges))
+        <?php if(!empty($vchallenges)): ?>
 
             <div class="container">
         <h6><u>Challenge Countdown</u></h6>
-        @foreach ($vchallenges as $vchallenge)
+        <?php $__currentLoopData = $vchallenges; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $vchallenge): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
             <div class="challenge">
-                <h6>{{ $vchallenge['challengeid'] }}. {{ $vchallenge['challengename'] }}</h6>
-                <p>Ends in: <span class="countdown" data-end="{{  $vchallenge['enddate'] }}"></span></p>
+                <h6><?php echo e($vchallenge['challengeid']); ?>. <?php echo e($vchallenge['challengename']); ?></h6>
+                <p>Ends in: <span class="countdown" data-end="<?php echo e($vchallenge['enddate']); ?>"></span></p>
             </div>
-        @endforeach
+        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
     </div>
-        @else
+        <?php else: ?>
             <div class="alert alert-warning" role="alert">
                 No valid challenges available.
             </div>
-        @endif
+        <?php endif; ?>
     </div>
     
 </body>
 </html>
-@endsection
+<?php $__env->stopSection(); ?>
+<?php echo $__env->make('layouts.app', ['activePage' => 'dashboard', 'title' => 'Mathletics Challenge', 'navName' => 'Analytics', 'activeButton' => 'laravel'], \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\Users\mable\Desktop\Math_Challenge\example-app\resources\views/pages/analytics.blade.php ENDPATH**/ ?>

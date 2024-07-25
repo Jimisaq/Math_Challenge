@@ -9,9 +9,9 @@
         <div class="collapse navbar-collapse justify-content-end" id="navigation">
             <ul class="nav navbar-nav mr-auto">
                 <li class="nav-item">
-                    <a href="#" class="nav-link" data-toggle="dropdown">
+                    <a href="#" class="nav-link" data-toggle="dropdown" >
                         <!-- <i class="nc-icon nc-palette"></i> -->
-                        <span class="d-lg-none">{{ __('Dashboard') }}</span>
+                        <span class="d-lg-none" >{{ __('Dashboard') }}</span>
                     </a>
                 </li>
                 <!-- <li class="dropdown nav-item">
@@ -69,3 +69,4 @@
         </div>
     </div>
 </nav>
+

@@ -372,12 +372,28 @@ body>.navbar-collapse .sidebar-background {
     background-position: center center;
 }
 
-.sidebar .logo,
-body>.navbar-collapse .logo {
-    padding: 10px 15px 9px 15px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-    position: relative;
-    z-index: 4;
+.sidebar .sidebar-wrapper .logo-container {
+    background-color:white;
+    display:flex;
+    padding:2%;
+    border: 2px solid black;
+    height:60px;
+}
+
+.sidebar .sidebar-wrapper .logo-container .logo-first-part{
+    background-color:black;
+    width:50%;
+    padding:2%;
+    font-size: larger;
+    font-weight: bolder;
+}
+
+.sidebar .sidebar-wrapper .logo-container .logo-second-part{
+    color:black;
+    width:50%;
+    padding:2%;
+    font-size: larger;
+    font-weight: bolder;
 }
 
 .sidebar .logo p,

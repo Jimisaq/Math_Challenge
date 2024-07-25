@@ -1,6 +1,6 @@
-@extends('layouts.app', ['activePage' => 'dashboard', 'title' => 'Mathletics Challenge', 'navName' => 'Set Challenge Parameters', 'activeButton' => 'laravel'])
 
-@section('content')
+
+<?php $__env->startSection('content'); ?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -9,7 +9,9 @@
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <style>
         /* Optional: Custom CSS for additional styling */
-       
+        body {
+            padding: 20px;
+        }
         .form-group {
             margin-bottom: 20px;
         }
@@ -17,25 +19,27 @@
 </head>
 <body>
     <div class="container">
+        <h1 class="mb-4">Setup Challenge</h1>
 
-        @if(session('success'))
+        <?php if(session('success')): ?>
             <div class="alert alert-success">
-                {{ session('success') }}
-            </div>
-        @endif
+                <?php echo e(session('success')); ?>
 
-        @if($errors->any())
-            <div class="alert alert-danger">
-                @foreach($errors->all() as $error)
-                    <p>{{ $error }}</p>
-                @endforeach
             </div>
-        @endif
+        <?php endif; ?>
+
+        <?php if($errors->any()): ?>
+            <div class="alert alert-danger">
+                <?php $__currentLoopData = $errors->all(); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $error): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                    <p><?php echo e($error); ?></p>
+                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+            </div>
+        <?php endif; ?>
 
         <div class="card">
             <div class="card-body">
-                <form action="{{route('challenges.store')}}" method="POST" enctype="multipart/form-data">
-                    @csrf
+                <form action="<?php echo e(route('challenges.store')); ?>" method="POST" enctype="multipart/form-data">
+                    <?php echo csrf_field(); ?>
                     <div class="form-group mb-3">
                         <label for="challenge_name">Challenge Name</label>
                         <input type="text" class="form-control" id="challenge_name" name="challenge_name" required>
@@ -71,7 +75,7 @@
                         <input type="file" class="form-control" id="answer_file" name="answer_file" accept=".xlsx" required>
                     </div>
 
-                    <button type="submit" class="btn btn-primary bg-info">Set Challenge</button>
+                    <button type="submit" class="btn btn-primary">Set Challenge</button>
                 </form>
             </div>
         </div>
@@ -101,4 +105,5 @@
     </script>
 </body>
 </html>
-@endsection
+<?php $__env->stopSection(); ?>
+<?php echo $__env->make('layouts.app', ['activePage' => 'dashboard', 'title' => 'Mathletics Challenge', 'navName' => 'Set Challenge Parameters', 'activeButton' => 'laravel'], \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\Users\mable\Desktop\Math_Challenge\example-app\resources\views/pages/setChallengeParameters.blade.php ENDPATH**/ ?>

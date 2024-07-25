@@ -28,7 +28,8 @@ class AnalyticsController extends Controller
             'challenges.challenge_name',
             'participant.name as participant_name',
             'schools.school_name',
-            'challengeattempt.score'
+            'challengeattempt.score',
+            'challenges.end_date'
             )
         ->orderBy('challengeattempt.challenge_no')
         ->orderByDesc('challengeattempt.score')
@@ -41,11 +42,19 @@ class AnalyticsController extends Controller
             if (!isset($challenges[$challengeNo])) {
                 $challenges[$challengeNo] = [
                     'challenge_name' => $participant->challenge_name,
-                    'participants' => [],
+                    'participants' => [], 
+                    'expired' => false, 
                 ];
             }
-
-            if (count($challenges[$challengeNo]['participants']) < 2) {
+            
+            $challengeEndDate = Carbon::parse($participant->end_date);
+            
+            if ($challengeEndDate < now()) {
+                $challenges[$challengeNo]['expired'] = true;
+            }
+            
+            // Ensure 'participants' is an array before accessing it
+            if ($challenges[$challengeNo]['expired'] && is_array($challenges[$challengeNo]['participants']) && count($challenges[$challengeNo]['participants']) < 2) {
                 $challenges[$challengeNo]['participants'][] = [
                     'participant_name' => $participant->participant_name,
                     'school_name' => $participant->school_name,
@@ -53,7 +62,6 @@ class AnalyticsController extends Controller
                 ];
             }
         }
-
         return $challenges;
     }
 
@@ -61,7 +69,7 @@ class AnalyticsController extends Controller
     {
         $validchallenges = DB::table('challenges')
         ->select('id', 'challenge_name', 'start_date', 'end_date')
-        ->orderBy('end_date')
+        ->orderByDesc('end_date')
         ->get();
 
         $vchallenges=[];

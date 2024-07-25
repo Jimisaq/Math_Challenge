@@ -42,7 +42,7 @@
         }
     </script>
 
-<style>
+    <style>
         .table-card{
             background-color: white;
             padding:2%;
@@ -86,7 +86,7 @@
             color:black;
         }
         tr:hover {
-            background-color: #EFEFF8;
+            background-color: #d08acc;
         }
         h3{
             text-transform: uppercase;

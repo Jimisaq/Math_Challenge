@@ -60,10 +60,10 @@
             border-radius: 10px;
             box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.2);
         }
-        table {
+        table{
             width: 100%;
             margin-top: 20px;
-            background-color: white;
+            background-color:white !important;
             border: 1px solid #28a745;
             border-collapse: collapse;
         }
@@ -84,7 +84,7 @@
             border: 1px solid #28a745;
         }
         tr:hover {
-            background-color: #EFEFF8;
+            background-color: #775D47;
         }
         h3{
             text-transform: uppercase;

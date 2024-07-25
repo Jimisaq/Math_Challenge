@@ -3444,6 +3444,68 @@ input, select, textarea {
 		transform: translateX(0);
 	}
 
+	/*Cards*/
+	.table-card{
+		background-color: white;
+		padding:2%;
+		border-radius: 10px;
+		box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.2);
+	}
+	.card{
+		background-color: white;
+		padding:2%;
+		border-radius: 10px;
+		box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.2);
+	}
+	.challenge p{
+		color:black;
+	}
+	hr{
+		border:1px solid gray;
+	}
+	table {
+		width: 100%;
+		margin-top: 20px;
+		background-color: white;
+		border: 1px solid #28a745;
+		border-collapse: collapse;
+	}
+	thead{
+		color:white;
+		background-color: #28a745;
+		text-transform: uppercase;
+		font-size: small;
+		font-weight:lighter;
+	}
+	thead tr:hover{
+		background-color: #D2C8E3;
+		color:black;
+	}
+	td:hover {
+		background-color: #fde6fc;
+	}
+	th {
+		padding: 10px;
+		text-align: left;
+		border: 1px solid #28a745;
+		color:black;
+	}
+	td {
+		padding: 10px;
+		text-align: left;
+		background-color: white;
+		border: 1px solid #28a745;
+		color:black;
+	}
+	h3{
+		text-transform: uppercase;
+		color:#17a2b8 ; 
+		font-weight: bold;
+	}
+	h5{
+		color:#28a745;
+	}
+
 /* Header */
 
 	#header {

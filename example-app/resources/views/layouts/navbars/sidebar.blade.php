@@ -1,10 +1,10 @@
-<div class="sidebar" data-color="black" data-image="{{ asset('light-bootstrap/img/sidebar-4.jpg') }}">
+<div class="sidebar rounded" data-color="black" data-image="{{ asset('light-bootstrap/img/sidebar-4.jpg') }}">
     <!--
 Tip 1: You can change the color of the sidebar using: data-color="purple | blue | green | orange | red"
 
 Tip 2: you can also add an image using data-image tag
 -->
-    <div class="sidebar-wrapper">
+    <div class="sidebar-wrapper ">
         <div class="logo">
             <a href="http://www.creative-tim.com" class="simple-text">
                 {{ __("MATHEMATICS CHALLENGE") }}
@@ -20,41 +20,19 @@ Tip 2: you can also add an image using data-image tag
 
 
             <li class="nav-item">
-                <a class="nav-link active  bg-info" href="{{route('page.index', 'uploadschools')}}">
-                    
-                    <p>{{ __("UPLOAD SCHOOLS ") }}</p>
+                <a class="nav-link active  bg-info" href="{{route('schools.add')}}">
+
+                    <p>{{ __("REGISTER SCHOOL") }}</p>
                 </a>
-
-
             </li>
+
 
 
 
             <li class="nav-item">
                 <a class="nav-link active  bg-info" href="{{route('page.index', 'setChallengeParameters')}}">
-                    
+
                     <p>{{ __("SET CHALLENGE PARAMETERS ") }}</p>
-                </a>
-
-
-            </li>
-
-
-
-            <li class="nav-item">
-                <a class="nav-link active  bg-info" href="{{route('page.index', 'uploadquestions')}}">
-                    
-                    <p>{{ __("UPLOAD QUESTIONS ") }}</p>
-                </a>
-
-
-            </li>
-
-
-            <li class="nav-item">
-                <a class="nav-link active  bg-info" href="{{route('page.index', 'uploadanswers')}}">
-                    
-                    <p>{{ __("UPLOAD ANSWERS ") }}</p>
                 </a>
 
 
@@ -62,7 +40,7 @@ Tip 2: you can also add an image using data-image tag
 
             <li class="nav-item">
                 <a class="nav-link active  bg-info" href="{{route('analytics.index', 'analytics')}}">
-                    
+
                     <p>{{ __("ANALYTICS") }}</p>
                 </a>
 

@@ -7,6 +7,7 @@ import java.sql.*;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Base64;
 
 public class Pupil {
     private int participantId;
@@ -163,8 +164,9 @@ public class Pupil {
             return;
         }
 
+//Variables needed to update the databse table
         LocalDateTime startTime;
-        int score;
+        int[] report;
         LocalDateTime endTime;
         Duration timeTaken;
         int redos=0;
@@ -180,24 +182,28 @@ public class Pupil {
                 while(true) {
                     printWriter.println("retrieving questions...");
                     startTime = LocalDateTime.now();
-                    score = Question.retrieveQuestion(printWriter, br, Integer.parseInt(challengeNumber), participantId, startTime);
+                    report = Question.retrieveQuestion(printWriter, br, Integer.parseInt(challengeNumber), participantId, startTime);
                     endTime = LocalDateTime.now();
                     timeTaken = Duration.between(startTime, endTime);
 
-                    printWriter.println("Attempt complete");
-                    printWriter.println("Total Marks:" + score);
+                    printWriter.println("ATTEMPT COMPLETE");
+                    printWriter.println("Questions attempted: " + report[3]);
+                    printWriter.println("Questions passed: " + report[1]);
+                    printWriter.println("Questions failed: " + report[2]);
+                    printWriter.println("=====================");
+                    printWriter.println("Your score:" + report[0]);
                     printWriter.println("Time taken: " + timeTaken.toMinutes() + " minutes and "+timeTaken.toSecondsPart()+" seconds");
-                    printWriter.println("_______________");
+                    printWriter.println("_____________________");
 
                     //update the attempted challenge table
-                    Model.recordChallenge(Integer.parseInt(challengeNumber), participantId, startTime, endTime, score);
+                    Model.recordChallenge(Integer.parseInt(challengeNumber), participantId, startTime, endTime, report[0]);
 
                     //allow the pupil two more redos after the first attempt
                     if(redos<2) {
-                        printWriter.println("Would you like to try again? Y/N");
+                        printWriter.println("Would you like to try again? Yes/No");
                         printWriter.println();
                         String redo = br.readLine();
-                        if (redo.equalsIgnoreCase("Y")) {
+                        if (redo.equalsIgnoreCase("Yes")) {
                             redos++;
                         } else {
                             printWriter.println("Challenge completed");
@@ -278,23 +284,5 @@ public class Pupil {
         }
     }
 
-    //receive and store image
-    public static void storeImage(String[] req, BufferedReader in, PrintWriter out, Socket soc) throws IOException{
 
-        File file = new File("PupilImages/"+req[1]+".jpeg");
-        long fileSize = Long.parseLong(in.readLine());
-
-        try (BufferedInputStream bis = new BufferedInputStream(soc.getInputStream());
-                BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(file))) {
-            byte[] buffer = new byte[1024];
-            int bytesRead;
-            long totalBytesRead = 0;
-            while (totalBytesRead < fileSize && (bytesRead = bis.read(buffer)) != -1) {
-                bos.write(buffer, 0, bytesRead);
-                totalBytesRead += bytesRead;
-            }
-        }catch (IOException e){
-            System.out.println(e.getMessage());
-        }
-    }
 }

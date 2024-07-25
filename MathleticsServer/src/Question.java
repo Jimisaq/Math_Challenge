@@ -54,14 +54,14 @@ public class Question {
         return marks;
     }
 
-    //awards marks to a question depending on the answer supplied
-    public static void awardMarks(int answer){
 
-    }
-
-    public static int retrieveQuestion(PrintWriter printWriter, BufferedReader br,int challengeNumber,int participantId,LocalDateTime start) throws IOException {
+    public static int[] retrieveQuestion(PrintWriter printWriter, BufferedReader br,int challengeNumber,int participantId,LocalDateTime start) throws IOException {
         char status='N';
         int score=0;
+        int totalQuestionsDone = 1;
+        int questionsPassed = 0;
+        int questionsFailed = 0;
+        int[] report = new int[4];
 
         try(Connection conn = Model.createConnection();){
 
@@ -76,7 +76,6 @@ public class Question {
             int duration = Model.getChallengeDuration(challengeNumber);
 
 
-            int j  = 1;
             while (rs.next()){
 
                     LocalDateTime rightNow = LocalDateTime.now();
@@ -91,10 +90,9 @@ public class Question {
                     Duration timeRemaining = timeLimit.minus(timeElapsed);
                     String jep = ("Time left: " + timeRemaining.toMinutes() + ":" + timeRemaining.toSecondsPart() +":" +timeRemaining.toMillisPart());
                     printWriter.println(jep);
-                    int count = 10-j;
+                    int count = 10-totalQuestionsDone;
                     printWriter.println("Questions left: " +count);
 
-//
                 //displaying question on the client
                         printWriter.println(rs.getString("question_text"));
                         printWriter.println();
@@ -105,11 +103,13 @@ public class Question {
                             printWriter.println("Correct!");
                             status = 'C';
                             score += rs.getInt("marks");
+                            questionsPassed++;
                         } else if (Integer.parseInt(ans) != rs.getInt("answer")){
 
                             printWriter.println("Incorrect!");
                             status = 'I';
                             score -=3;
+                            questionsFailed++;
 
                             if(ans.isEmpty()){
                                 printWriter.println("No answer supplied");
@@ -124,16 +124,21 @@ public class Question {
 
 
 //if the questions are done, break out of the loop
-                if(j>=3){
+                if(totalQuestionsDone>=10){
                     break;
                 }
 
-                    j++;
+                    totalQuestionsDone++;
             }
 
         }catch (SQLException e){
             System.out.println(e.getMessage());
         };
-        return score;
+        report[0] = score;
+        report[1] = questionsPassed;
+        report[2] = questionsFailed;
+        report[3] = totalQuestionsDone;
+
+        return report;
     }
 }

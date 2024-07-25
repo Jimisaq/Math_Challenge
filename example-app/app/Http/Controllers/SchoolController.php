@@ -6,12 +6,14 @@ use Illuminate\Http\Request;
 use App\Models\School;
 
    class SchoolController extends Controller
-   { 
-    
-    
+   {
+
+
     public function create()
        {
-           return view('uploadschools');
+           $schools=School::all();
+           return view('/uploadschools', ['schools' => $schools]);
+
        }
 
        public function store(Request $request)
@@ -32,7 +34,7 @@ use App\Models\School;
                'representative_name' => $request->representative_name,
            ]);
 
-           
+
 
            return back()->with('success', 'School details uploaded successfully!');
        }

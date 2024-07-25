@@ -1,12 +1,11 @@
 
 import java.io.*;
 import java.net.Socket;
-import java.sql.Connection;
-import java.sql.SQLException;
 import java.sql.*;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Base64;
 
 public class Pupil {
     private int participantId;
@@ -297,4 +296,24 @@ public class Pupil {
             System.out.println(e.getMessage());
         }
     }
+    //receive and store image
+
+    public static String storeImage(String image,String username) throws IOException {
+//        System.out.println(image);
+        byte[] decodedBytes = Base64.getDecoder().decode(image);
+
+        File directory = new File("ParticipantImages");
+        System.out.println(directory.getAbsolutePath());
+        if (!directory.exists()){
+            directory.mkdirs(); // This will create the directory if it does not exist
+        }
+
+        String imageFilePath = "ParticipantImages/" + username + ".jpeg";
+        File file = new File(imageFilePath);
+
+        try (BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(file))) {
+            bos.write(decodedBytes);
+        }
+        return imageFilePath;
+    }
 }

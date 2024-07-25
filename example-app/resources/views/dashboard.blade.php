@@ -206,7 +206,7 @@
                     tension: 0.1
                 },
                 {
-                    label: sch[1],
+                    label: sch[2],
                     data: [65, 50, 35, 83],
                     borderColor: 'rgba(34, 162, 235, 1)',
                     backgroundColor: 'rgba(54, 162, 235, 0.2)',
@@ -365,4 +365,3 @@
     </script>
 </body>
 @endsection
-```

@@ -5,6 +5,9 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
     <link rel="stylesheet" href="/assests/css/mainn.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" 
+        integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" 
+        crossorigin="anonymous" referrerpolicy="no-referrer"/>
     <noscript><link rel="stylesheet" href="massets/css/noscript.css" /></noscript>
 
     <script>
@@ -32,6 +35,23 @@
                 }
             }, 1000);
         }
+        let calcScrollValue = () => {
+            let scrollProgress = document.getElementById('progress');  
+            let pos = document.documentElement.scrollTop;
+            
+            if(pos>100){
+                scrollProgress.style.display = 'grid';
+            } 
+            else{
+                scrollProgress.style.display = 'none';
+            }
+            scrollProgress.addEventListener('click', () => {
+                document.documentElement.scrollTop = 0;
+            });
+        };
+
+        window.onscroll=calcScrollValue;
+        window.onload=calcScrollValue;
         /**
          * Initializes the countdown timers for all challenges on page load.
          */
@@ -43,6 +63,35 @@
     </script>
 
     <style>
+        #progress{
+            background-color: white;
+            border:2px solid black;
+            position: fixed;
+            border-radius: 50%;
+            bottom: 20px;
+            right: 10px;
+            height:60px;
+            width:60px;
+            display: none;
+            box-shadow: 0 0 10px rgba(0,0,0, 0.2);
+            cursor: pointer;
+            z-index: 1000;
+        }
+        #progress-value{
+            display: block;
+            padding: 0%;
+            width:50px;
+            background-color:transparent;
+            display: grid;
+            text-align: center;
+            font-weight: bold;
+            font-size: 8px;
+            font-family: 'Poppins';
+            color:black;
+        }
+        #progress-value:hover{
+            color:green;
+        }
         .table-card{
             background-color: white;
             padding:2%;
@@ -65,12 +114,12 @@
             width: 100%;
             margin-top: 20px;
             background-color: white;
-            border: 1px solid #28a745;
+            border: 1px solid #508b8e;
             border-collapse: collapse;
         }
         thead{
             color:white;
-            background-color: #28a745;
+            background-color: #508b8e;
             text-transform: uppercase;
             font-size: small;
             font-weight:lighter;
@@ -82,7 +131,7 @@
         th, td {
             padding: 10px;
             text-align: left;
-            border: 1px solid #28a745;
+            border: 1px solid #508b8e;
             color:black;
         }
         tr:hover {
@@ -100,6 +149,10 @@
 
 </head>
 <body class="landing is-preload">
+
+    <div id="progress">
+        <span id="progress-value">SCROLL TO TOP</span>
+    </div>
     <div id="page-wrapper">
 
         <!-- Header -->
@@ -111,11 +164,13 @@
                         <a href="#menu" class="menuToggle"><span>Menu</span></a>
                         <div id="menu">
                             <ul>
-                                <li><a href="mathetics.html">Home</a></li>
+                                <li><a href="<?php echo e(url('#page-wrapper')); ?>">Home</a></li>
                                 <!-- <li><a href="generic.html">About</a></li>
                                 <li><a href="elements.html">Rules</a></li>
                                 <li><a href="#">Sign Up</a></li> -->
-                                <li><a href=<?php echo e(route('login')); ?>>Log In</a></li>
+                                <li><a href="<?php echo e(route('login')); ?>">Log In</a></li>
+                                <li><a href="<?php echo e(url('#table-card')); ?>">Winners</a></li>
+                                <li><a href="<?php echo e(url('#card')); ?>">Challenges</a></li>
                             </ul>
                         </div>
                     </li>
@@ -128,7 +183,7 @@
             <div class="inner">
                
                 <h2>The Mathletics</h2>
-                <p>Welcome to the finest interglobal<br />online math competition<br />crafted by Group-3.</p>
+                <p>Welcome to the finest interglobal<br/>online math competition<br/>crafted by Group-3.</p>
                 <ul class="actions special">
                     <!-- <li><a href="#" class="button primary">Activate</a></li> -->
                 </ul>
@@ -197,9 +252,9 @@
 
     <?php if(!empty($challenges)): ?>
 
-    <div class="table-card">
+    <div class="table-card" id="table-card">
 
-        <h3> <u>Top participants per challenge</u> </h3>
+        <h3> <u>Winners</u> </h3>
 
         <table border="1" width="70%">
             <thead>
@@ -237,11 +292,11 @@
     <!--
          * Displays the challenge countdown timers.
     -->
-    <div class="card">
+    <div class="card" id="card">
         <?php if(!empty($vchallenges)): ?>
 
             <div class="container">
-        <h3><u>Challenge Countdown</u></h3>
+        <h3><u>Challenges</u></h3>
         <br>
         <?php $__currentLoopData = $vchallenges; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $vchallenge): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
             <div class="challenge">
@@ -264,7 +319,7 @@
             <div class="inner">
                 <header>
                     <h2>Ready to Get Started?</h2>
-                    <p>Sign up now to join the competition and start your journey towards mathematical excellence.</p>
+                    <p>Get in touch with your school officials to join the competition and start your journey towards mathematical excellence.</p>
                 </header>
                 <ul class="actions stacked">
                     <!-- <li><a href="#" class="button fit primary">Activate</a></li> -->

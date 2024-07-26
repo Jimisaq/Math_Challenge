@@ -2817,7 +2817,7 @@ input, select, textarea {
 		}
 
 		.wrapper.style1 {
-			background-color: #21b2a6;
+			background-color: #30803f;
 			color: #c8ece9;
 		}
 
@@ -2980,7 +2980,7 @@ input, select, textarea {
 		}
 
 		.wrapper.style3 {
-			background-color: #505393;
+			background-color: rgb(29, 130, 173);
 			color: #d3d4e4;
 		}
 
@@ -3443,6 +3443,42 @@ input, select, textarea {
 		-ms-transform: translateX(0);
 		transform: translateX(0);
 	}
+	/*
+		scroll to top
+	*/
+	#progress{
+		background-color: white;
+		border:2px solid black;
+		position: fixed;
+		border-radius: 50%;
+		bottom: 20px;
+		right: 10px;
+		height:60px;
+		width:60px;
+		display: none;
+		place-items: center; /*Puts arrow in the middle*/
+		box-shadow: 0 0 10px rgba(0,0,0, 0.2);
+		cursor: pointer;
+		z-index: 1000;
+	}
+
+	#progress-value{
+		display: block;
+		padding: 0%;
+		width:50px;
+		background-color:transparent;
+		display: grid;
+		text-align: center;
+		text-transform: uppercase;
+		font-weight: bold;
+		font-size: 11px;
+		font-family: 'Poppins';
+		color:black;
+	}
+
+	#progress-value:hover{
+		color:orange;
+	}
 
 	/*Cards*/
 	.table-card{
@@ -3467,12 +3503,12 @@ input, select, textarea {
 		width: 100%;
 		margin-top: 20px;
 		background-color: white;
-		border: 1px solid #28a745;
+		border: 1px solid #508b8e;
 		border-collapse: collapse;
 	}
 	thead{
 		color:white;
-		background-color: #28a745;
+		background-color: #508b8e;
 		text-transform: uppercase;
 		font-size: small;
 		font-weight:lighter;
@@ -3487,7 +3523,7 @@ input, select, textarea {
 	th {
 		padding: 10px;
 		text-align: left;
-		border: 1px solid #28a745;
+		border: 1px solid #508b8e;
 		color:black;
 	}
 	td {
@@ -3513,7 +3549,7 @@ input, select, textarea {
 		-webkit-transition: background-color 0.2s ease;
 		-ms-transition: background-color 0.2s ease;
 		transition: background-color 0.2s ease;
-		background: #2e3842;
+		background: #1d3956;
 		height: 3em;
 		left: 0;
 		line-height: 3em;
@@ -3954,7 +3990,7 @@ input, select, textarea {
 
 	#footer {
 		padding: 6em 0 4em 0 ;
-		background-color: #1d242a;
+		background-color: #1d3956;
 		text-align: center;
 	}
 
@@ -4032,10 +4068,10 @@ input, select, textarea {
 /* Landing */
 
 	body.landing #page-wrapper {
-		background-image: -moz-linear-gradient(top, rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url("../../images/download22.jpg");
-		background-image: -webkit-linear-gradient(top, rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url("../../images/download22.jpg");
+		background-image: -moz-linear-gradient(top, rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url("../../images/bg-image.jpg");
+		background-image: -webkit-linear-gradient(top, rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url("../../images/bg-image.jpg");
 		background-image: -ms-linear-gradient(top, rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url("../../images/banner.jpg");
-		background-image: linear-gradient(top, rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url("../../images/download22.jpg");
+		background-image: linear-gradient(top, rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url("../../images/bg-image.jpg");
 		background-attachment: fixed;
 		background-position: center center;
 		background-repeat: no-repeat;
@@ -4044,7 +4080,7 @@ input, select, textarea {
 	}
 
 	body.landing #footer {
-		background-color: rgba(29, 36, 42, 0.9);
+		background-color: #1d3956;
 	}
 
 	body.is-mobile.landing #page-wrapper {
@@ -4053,15 +4089,15 @@ input, select, textarea {
 
 	body.is-mobile.landing #banner,
 	body.is-mobile.landing .wrapper.style4 {
-		background-image: -moz-linear-gradient(top, rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url("../../images/download22.jpg");
-		background-image: -webkit-linear-gradient(top, rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url("../../images/download22.jpg");
+		background-image: -moz-linear-gradient(top, rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url("../../images/bg-image.jpg");
+		background-image: -webkit-linear-gradient(top, rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url("../../images/bg-image.jpg");
 		background-image: -ms-linear-gradient(top, rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url("../../images/banner.jpg");
-		background-image: linear-gradient(top, rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url("../../images/download22.jpg");
+		background-image: linear-gradient(top, rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url("../../images/bg-image.jpg");
 		background-position: center center;
 		background-repeat: no-repeat;
 		background-size: cover;
 	}
 
 	body.is-mobile.landing #footer {
-		background-color: #1d242a;
+		background-color: #1d3956;
 	}

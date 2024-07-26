@@ -17,34 +17,43 @@ Tip 2: you can also add an image using data-image tag
 
         <ul class="nav">
             <li class="nav-item @if($activePage == 'dashboard') active @endif">
-                <a class="nav-link" href="{{route('dashboard')}}">
-                    <i class="nc-icon nc-chart-pie-35"></i>
-                    <p>{{ __(" Admin Dashboard") }}</p>
+                <a class="nav-link  bg-info" href="{{route('dashboard')}}">
+                    <p>{{ __(" ADMIN DASHBOARD") }}</p>
                 </a>
             </li>
 
 
             <li class="nav-item">
-                <a class="nav-link active  bg-info" href="{{route('page.index', 'uploadschools')}}">
-                    
-                    <p>{{ __("UPLOAD SCHOOLS ") }}</p>
+                <a class="nav-link active  bg-info" href="{{route('schools.add')}}">
+
+                    <p>{{ __("REGISTER SCHOOL") }}</p>
                 </a>
             </li>
+
+
+
 
             <li class="nav-item">
                 <a class="nav-link active  bg-info" href="{{route('page.index', 'setChallengeParameters')}}">
-                    
+
                     <p>{{ __("SET CHALLENGE PARAMETERS ") }}</p>
                 </a>
             </li>
 
             <li class="nav-item">
                 <a class="nav-link active  bg-info" href="{{route('page.index', 'analytics')}}">
-                    
+
                     <p>{{ __("ANALYTICS") }}</p>
                 </a>
             </li>
 
+            <li class="nav-item">
+                <a class="nav-link active  bg-info" href="{{route('page.index', 'viewcharts')}}">
+
+                    <p>{{ __("VIEW CHARTS") }}</p>
+                </a>
+            </li>
+            
         </ul>
     </div>
 </div>

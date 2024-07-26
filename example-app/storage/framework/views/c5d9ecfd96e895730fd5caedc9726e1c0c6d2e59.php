@@ -1,6 +1,6 @@
-@extends('layouts.app', ['activePage' => 'dashboard', 'title' => 'Mathletics Challenge', 'navName' => 'Upload Schools', 'activeButton' => 'laravel'])
 
-@section('content')
+
+<?php $__env->startSection('content'); ?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -12,22 +12,23 @@
     <div class="container mt-5">
         <h1 class="mb-4">Upload Schools</h1>
         
-        @if(session('success'))
+        <?php if(session('success')): ?>
             <div class="alert alert-success">
-                {{ session('success') }}
+                <?php echo e(session('success')); ?>
+
             </div>
-        @endif
+        <?php endif; ?>
         
-        @if($errors->any())
+        <?php if($errors->any()): ?>
             <div class="alert alert-danger">
-                @foreach($errors->all() as $error)
-                    <p>{{ $error }}</p>
-                @endforeach
+                <?php $__currentLoopData = $errors->all(); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $error): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                    <p><?php echo e($error); ?></p>
+                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
             </div>
-        @endif
+        <?php endif; ?>
         
-        <form action="{{ route('schools.store') }}" method="POST" class="needs-validation" novalidate>
-            @csrf
+        <form action="<?php echo e(route('schools.store')); ?>" method="POST" class="needs-validation" novalidate>
+            <?php echo csrf_field(); ?>
             <div class="form-group">
                 <label for="school_name">School Name:</label>
                 <input type="text" name="school_name" id="school_name" class="form-control" required>
@@ -92,4 +93,5 @@
     </script>
 </body>
 </html>
-@endsection
+<?php $__env->stopSection(); ?>
+<?php echo $__env->make('layouts.app', ['activePage' => 'dashboard', 'title' => 'Mathletics Challenge', 'navName' => 'Upload Schools', 'activeButton' => 'laravel'], \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\Users\mable\Desktop\Math_Challenge\example-app\resources\views/pages/uploadschools.blade.php ENDPATH**/ ?>

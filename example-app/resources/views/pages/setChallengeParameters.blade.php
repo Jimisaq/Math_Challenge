@@ -17,7 +17,6 @@
 </head>
 <body>
     <div class="container">
-        <h1 class="mb-4">Setup Challenge</h1>
 
         @if(session('success'))
             <div class="alert alert-success">
@@ -72,7 +71,7 @@
                         <input type="file" class="form-control" id="answer_file" name="answer_file" accept=".xlsx" required>
                     </div>
 
-                    <button type="submit" class="btn btn-primary">Set Challenge</button>
+                    <button type="submit" class="btn btn-primary bg-info">Set Challenge</button>
                 </form>
             </div>
         </div>

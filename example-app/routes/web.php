@@ -20,8 +20,7 @@ Route::get('/', function () {
 
 use App\Http\Controllers\AnalyticsController;
 
-Route::get('/analytics', [AnalyticsController::class,'index'])->name('analytics.index');
-
+Route::get('/', [AnalyticsController::class,'index'])->name('analytics.index');
 
 Auth::routes();
 
@@ -30,6 +29,10 @@ Auth::routes();
 Auth::routes();
 
 Route::get('/home', 'App\Http\Controllers\HomeController@index')->name('dashboard');
+
+//register school form
+Route::get('/addschool', 'App\Http\Controllers\AddSchoolController@index')->name('schools.add');
+Route::post('/addschool','App\Http\Controllers\AddSchoolController@storeSchool')->name('schools.store');
 
 Route::group(['middleware' => 'auth'], function () {
 	Route::resource('user', 'App\Http\Controllers\UserController', ['except' => ['show']]);
@@ -43,11 +46,11 @@ Route::group(['middleware' => 'auth'], function () {
 });
 
 
- use App\Http\Controllers\SchoolController;
+// use App\Http\Controllers\SchoolController;
+//
+// Route::get('/uploadschools', [SchoolController::class, 'create'])->name('schools.create');
+// Route::post('/uploadschools', [SchoolController::class, 'store'])->name('schools.store');
 
- Route::get('/uploadschools', [SchoolController::class, 'create'])->name('schools.create');
- Route::post('/uploadschools', [SchoolController::class, 'store'])->name('schools.store');
- 
 
 use App\Http\Controllers\ChallengeController;
 
@@ -77,3 +80,8 @@ use App\Http\Controllers\ParticipantController;
 
 Route::get('/participants', [ParticipantController::class, 'index'])->name('participants.index');
 Route::get('/participants/{id}', [ParticipantController::class, 'show'])->name('participants.show');
+
+use App\Http\Controllers\ViewChartsController;
+
+Route::get('/viewcharts', [ViewChartsController::class, 'index'])->name('viewcharts.index');
+Route::get('/viewcharts', [ViewChartsController::class, 'calculateRankings'])->name('viewcharts.show');

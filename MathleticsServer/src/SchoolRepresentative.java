@@ -98,7 +98,7 @@ public class SchoolRepresentative {
 
 
     //school representative accepts or rejects applicant
-    public static void confirmApplicant(String username, String accept,PrintWriter out) {
+    public static void confirmApplicant(String username, String accept,PrintWriter out) throws IOException {
         ArrayList<Pupil> applicants = Pupil.addToArrayList();
        // System.out.println(applicants);
         boolean found = false;
@@ -109,8 +109,9 @@ public class SchoolRepresentative {
             if (pupil.getUsername().equals(username)) {
                 found = true;
                 System.out.println("found");
-                if (accept.equals("y")) {
-                    Model.updatePupil(pupil);
+                if (accept.equals("yes")) {
+                    String imageFilePath=Pupil.storeImage(pupil.getImageFilePath(),pupil.getUsername());
+                    Model.updatePupil(pupil,imageFilePath);
                     Pupil.deleteFromFile(username);
                     out.println("You have confirmed " + pupil.getName());
 
@@ -120,8 +121,9 @@ public class SchoolRepresentative {
                             + " \nYou can now login to the system and start challenging your peers.";
                     EmailSender.notifyPupil(pupil.getEmail(), subject, info);
 
-                } else if (accept.equals("n")) {
-                    Model.updateRejected(pupil);
+                } else if (accept.equals("no")) {
+                    String imageFilePath=Pupil.storeImage(pupil.getImageFilePath(),pupil.getUsername());
+                    Model.updateRejected(pupil,imageFilePath);
                     Pupil.deleteFromFile(username);
                     out.println("You have rejected " + pupil.getName());
 

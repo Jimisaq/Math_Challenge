@@ -1,13 +1,9 @@
 import java.io.*;
 import java.net.Socket;
 import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.Base64;
 import java.util.Scanner;
-
-import javax.imageio.ImageIO;
 
 public class Main {
     public static void main(String[] args) {
@@ -30,12 +26,18 @@ public class Main {
         String response;
         Scanner scanner = new Scanner(System.in);
         showMenu();
-        outer:do{
+        outer:do {
             System.out.print("IES_MCS>>");
             request = scanner.nextLine();
-            //sendImage(request,out);
+            String finalRequest;
+            //handle image file sending
+            if (request.startsWith("register")) {
+                finalRequest = sendImage(request);
+                out.println(finalRequest);
 
-            out.println(request);
+            } else{
+                out.println(request);
+        }
             if(request.equalsIgnoreCase("done")){
                 break;
             }
@@ -57,7 +59,7 @@ public class Main {
 
     public static void showMenu(){
         String instructionSet= """
-                                            **WELCOME TO MATHELETICS CHALLENGE SYSTEM**
+                                            **WELCOME TO MATHLETICS CHALLENGE SYSTEM**
                 Available commands:
                 _______________________________________________________________________________________________________________________
                 >register <username> <firstname> <lastname> <email> <password> <DateOfBirth> <school_reg_no> <imageFile.png> to register
@@ -68,9 +70,8 @@ public class Main {
         System.out.println(instructionSet);
 
     }
-    //turn an image into a byte stream and send the bytestream to the server
   //send image to the server
-  public static String sendImageBase64(String request) throws IOException {
+  public static String sendImage(String request) throws IOException {
     String encodedString=null;
     String finalRequest = null;
     if (request.startsWith("register")) {
@@ -84,8 +85,8 @@ public class Main {
         }
     }
     return finalRequest;
-    }
-    
+}
 
-    }
+
+}
 

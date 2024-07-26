@@ -15,7 +15,7 @@ return [
 
     'defaults' => [
         'guard' => 'web',
-        'passwords' => 'users',
+        'passwords' => 'administrators',
     ],
 
     /*
@@ -38,7 +38,7 @@ return [
     'guards' => [
         'web' => [
             'driver' => 'session',
-            'provider' => 'users',
+            'provider' => 'administrators',
         ],
     ],
 
@@ -60,9 +60,9 @@ return [
     */
 
     'providers' => [
-        'users' => [
+        'administrators' => [
             'driver' => 'eloquent',
-            'model' => App\Models\User::class,
+            'model' => App\Models\Administrators::class,
         ],
 
         // 'users' => [
@@ -70,6 +70,23 @@ return [
         //     'table' => 'users',
         // ],
     ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | API Guard
+    |--------------------------------------------------------------------------
+    |
+    | Here you may specify the API guard configuration. This guard uses the
+    | token driver and the administrators provider to authenticate users.
+    |
+    | You can add more guards as needed for your application.
+    |
+    */
+    'api' => [
+        'driver' => 'token',
+        'provider' => 'administrators', // Change to 'administrators'
+    ],
+
 
     /*
     |--------------------------------------------------------------------------
@@ -87,8 +104,8 @@ return [
     */
 
     'passwords' => [
-        'users' => [
-            'provider' => 'users',
+        'administrators' => [
+            'provider' => 'administrators',
             'table' => 'password_resets',
             'expire' => 60,
             'throttle' => 60,

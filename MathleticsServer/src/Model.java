@@ -102,13 +102,12 @@ public class Model {
     }
 
     //add a pupil to the database
-    public static void updatePupil(Pupil pupil){
+    public static void updatePupil(Pupil pupil,String imageFilePath){
         String salt = Authenticator.PasswordHasher.generateSalt();
         String hashedPwd = Authenticator.PasswordHasher.hashPassword(pupil.getPassword(),salt);
         String sql = "insert into participant(name,username,email,password,date_of_birth,school_reg_no,pupil_image,salt) values(?,?,?,?,?,?,?,?)";
 
-        try(Connection con = Model.createConnection();
-            FileInputStream inputStream = new FileInputStream(pupil.getImageFilePath());) {
+        try(Connection con = Model.createConnection();) {
             PreparedStatement st = con.prepareStatement(sql);
             st.setString(1, pupil.getName());
             st.setString(2, pupil.getUsername());
@@ -116,23 +115,22 @@ public class Model {
             st.setString(4, hashedPwd);
             st.setString(5, pupil.getDate_of_birth());
             st.setString(6, pupil.getSchoolRegNo());
-            st.setBlob(7,inputStream);
+            st.setString(7,imageFilePath);
             st.setString(8,salt);
 
             st.executeUpdate();
 
 
-        }catch(SQLException | IOException e){
+        }catch(SQLException e){
             System.out.println(e.getMessage());
         }
 
     }
     //update rejected table if pupil is rejected
-    public static void updateRejected(Pupil pupil){
+    public static void updateRejected(Pupil pupil,String imageFilePath){
         String sql = "insert into rejected(name,username,email,password,date_of_birth,school_reg_no) values(?,?,?,?,?,?)";
 
-        try(Connection con = Model.createConnection();
-            FileInputStream inputStream = new FileInputStream(pupil.getImageFilePath());) {
+        try(Connection con = Model.createConnection()) {
             PreparedStatement st = con.prepareStatement(sql);
             st.setString(1, pupil.getName());
             st.setString(2, pupil.getUsername());
@@ -140,10 +138,10 @@ public class Model {
             st.setString(4, pupil.getDate_of_birth());
             st.setString(5, pupil.getSchoolRegNo());
 
-            st.setBlob(6,inputStream);
+            st.setString(6,imageFilePath);
             st.executeUpdate();
 
-        }catch(SQLException | IOException e){
+        }catch(SQLException e){
             System.out.println(e.getMessage());
         }
 
@@ -324,5 +322,62 @@ public class Model {
         return schoolRegNo;
     }
 
-}
+//get the most correctly answered questions
+    public static ArrayList<Integer> getMostCorrectlyAnsweredQuestions(int challenge_no){
+        ArrayList<Integer> questions = new ArrayList<>();
+        try(Connection con = Model.createConnection()){
+            String sql = "SELECT question_no FROM AttemptedQuestion where challenge_no = ? and status = 'C' GROUP BY question_no ORDER BY COUNT(question_no) DESC LIMIT 5";
+            PreparedStatement st = con.prepareStatement(sql);
+            st.setInt(1,challenge_no);
+            ResultSet rs = st.executeQuery();
+            while(rs.next()){
+                questions.add(rs.getInt("question_no"));
+            }
+        }catch(SQLException e){
+            System.out.println(e.getMessage());
+        }
+        return questions;
+    }
 
+    //get the most incorrectly answered questions
+    public static ArrayList<Integer> getMostIncorrectlyAnsweredQuestions(int challenge_no){
+        ArrayList<Integer> questions = new ArrayList<>();
+        try(Connection con = Model.createConnection()){
+            String sql = "SELECT question_no FROM AttemptedQuestion where challenge_no = ? and status = 'I' GROUP BY question_no ORDER BY COUNT(question_no) DESC LIMIT 5";
+            PreparedStatement st = con.prepareStatement(sql);
+            st.setInt(1,challenge_no);
+            ResultSet rs = st.executeQuery();
+            while(rs.next()){
+                questions.add(rs.getInt("question_no"));
+            }
+        }catch(SQLException e){
+            System.out.println(e.getMessage());
+        }
+        return questions;
+    }
+
+    //get the most attempted questions
+    public static ArrayList<Integer> getMostAttemptedQuestions(int challenge_no){
+        ArrayList<Integer> questions = new ArrayList<>();
+        try(Connection con = Model.createConnection()){
+            String sql = "SELECT question_no FROM AttemptedQuestion where challenge_no = ? GROUP BY question_no ORDER BY COUNT(question_no) DESC LIMIT 5";
+            PreparedStatement st = con.prepareStatement(sql);
+            st.setInt(1,challenge_no);
+            ResultSet rs = st.executeQuery();
+            while(rs.next()){
+                questions.add(rs.getInt("question_no"));
+            }
+        }catch(SQLException e){
+            System.out.println(e.getMessage());
+        }
+        return questions;
+    }
+
+//    //get the most correctly answered questions
+//    public static ArrayList<Integer> getMostCorrectlyAnsweredQuestions(int challenge_no){
+//        ArrayList<Integer> questions = new ArrayList<>();
+//        try(Connection con = Model.createConnection()){
+//            String sql = "SELECT question_no FROM AttemptedQuestion where challenge_no = ? and status = 'C' GROUP BY question_no ORDER BY COUNT(question_no) DESC LIMIT 5";
+//            PreparedStatement st = con.prepareStatement
+
+}

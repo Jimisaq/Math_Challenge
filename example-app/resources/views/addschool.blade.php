@@ -63,6 +63,13 @@
                 Please enter the representative name.
             </div>
         </div>
+        <div class="form-group">
+            <label for="password">Representative password:</label>
+            <input type="password" name="password" id="password" class="form-control" required>
+            <div class="invalid-feedback">
+                Please enter the representative password.
+            </div>
+        </div>
         <button type="submit" class="btn btn-primary bg-info">Upload</button>
     </form>
 
@@ -78,8 +85,6 @@
             <th>School Name</th>
             <th>District</th>
             <th>School Registration Number</th>
-            <th>Representative Name</th>
-            <th>Representative Email</th>
         </tr>
         </thead>
         <tbody>
@@ -89,8 +94,6 @@
                 <td>{{$school->school_name}}</td>
                 <td>{{$school->district}}</td>
                 <td>{{$school->registration_number}}</td>
-                <td>{{$school->representative_name}}</td>
-                <td>{{$school->representative_email}}</td>
             </tr>
         @endforeach
         </tbody>

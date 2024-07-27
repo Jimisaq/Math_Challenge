@@ -138,13 +138,17 @@ public class Pupil {
         String chal=null;
         try(Connection conn = Model.createConnection();){
 
-        String sql = "SELECT challenge_no, challenge_name from challenge";
+        String sql = "SELECT id, challenge_name from challenge";
         Statement stmt = conn.createStatement();
         ResultSet rs = stmt.executeQuery(sql);
 
         while (rs.next()){
-        chal=rs.getString("challenge_no")+"."+rs.getString("challenge_name");
-        printWriter.println(chal);
+         //check if challenge is open
+        if(Model.checkChallengeOpen(rs.getInt("id"))) {
+
+            chal = rs.getInt("id") + "." + rs.getString("challenge_name");
+            printWriter.println(chal);
+        }
         }
         }catch (SQLException e){
             System.out.println(e.getMessage());
@@ -162,16 +166,17 @@ public class Pupil {
             return;
         }
 
-//Variables needed to update the databse table
+//Variables needed to update the database table
         LocalDateTime startTime;
         int[] report;
         LocalDateTime endTime;
         Duration timeTaken;
         int redos=0;
+        int overallTotalQuestions = 0;
 
         try(Connection conn = Model.createConnection();){
 
-        String sql = "SELECT 1 from challenge where challenge_no = ? ";
+        String sql = "SELECT 1 from challenge where id = ? ";
         PreparedStatement stmt = conn.prepareStatement(sql);
         stmt.setString(1,req[1]);
         ResultSet rs = stmt.executeQuery();
@@ -183,6 +188,7 @@ public class Pupil {
                     report = Question.retrieveQuestion(printWriter, br, Integer.parseInt(challengeNumber), participantId, startTime);
                     endTime = LocalDateTime.now();
                     timeTaken = Duration.between(startTime, endTime);
+                    overallTotalQuestions += report[3];
 
                     printWriter.println("ATTEMPT COMPLETE");
                     printWriter.println("Questions attempted: " + report[3]);
@@ -193,8 +199,6 @@ public class Pupil {
                     printWriter.println("Time taken: " + timeTaken.toMinutes() + " minutes and "+timeTaken.toSecondsPart()+" seconds");
                     printWriter.println("_____________________");
 
-                    //update the attempted challenge table
-                    Model.recordChallenge(Integer.parseInt(challengeNumber), participantId, startTime, endTime, report[0]);
 
                     //allow the pupil two more redos after the first attempt
                     if(redos<2) {
@@ -207,12 +211,21 @@ public class Pupil {
                             printWriter.println("Challenge completed");
                             break;
                         }
+
+
                     }else {
                         printWriter.println("You have exhausted your redos");
                         //printWriter.println();
                         break;
                     }
+
                 }
+                //get percentage repetition of questions across all attempts
+                int distinctQuestions = Model.getDistinctQuestions(Integer.parseInt(challengeNumber), participantId);
+                double percentageRepetition = (double)(((overallTotalQuestions-distinctQuestions )/ overallTotalQuestions) * 100);
+
+                //update the attempted challenge table
+                Model.recordChallenge(Integer.parseInt(challengeNumber), participantId, startTime, endTime, report[0],percentageRepetition,redos,report[4]);
 
             }else{
                 printWriter.println("Challenge not found");

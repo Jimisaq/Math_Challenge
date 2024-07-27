@@ -17,6 +17,8 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
+use App\Http\Controllers\Analytics1Controller;
+Route::get('/', [Analytics1Controller::class,'index'])->name('analytics1.index');
 
 use App\Http\Controllers\AnalyticsController;
 

@@ -8,7 +8,7 @@ import java.util.ArrayList;
 public class Model {
 
     public static Connection createConnection() throws SQLException {
-        String url = "jdbc:mysql://localhost:3306/ies_math_challenge";
+        String url = "jdbc:mysql://localhost:3306/MathleticsFinal";
         String username="root";
         String password = "Tribalchief14.";
 
@@ -19,7 +19,7 @@ public class Model {
     public static boolean checkRegNo(Pupil pupil){
 
         try(Connection con =Model.createConnection()){
-            String sql ="SELECT 1 FROM School where school_reg_no = ?";
+            String sql ="SELECT 1 FROM school where registration_number = ?";
 
             PreparedStatement st =con.prepareStatement(sql);
             st.setString(1,pupil.getSchoolRegNo());
@@ -56,7 +56,7 @@ public class Model {
     //check if a username is taken
     public static boolean checkUsername(Pupil pupil){
         try(Connection con = Model.createConnection()){
-            String sql = "SELECT 1 FROM participant where username = ?";
+            String sql = "SELECT 1 FROM participant where user_name = ?";
             PreparedStatement st = con.prepareStatement(sql);
             st.setString(1,pupil.getUsername());
             ResultSet rs = st.executeQuery();
@@ -71,7 +71,7 @@ public class Model {
     //check if a pupil has already been rejected
     public static boolean checkRejected(String name,String schoolRegNo) {
         try (Connection con = Model.createConnection()) {
-            String sql = "select 1 from rejected where name = ? and school_reg_no = ?";
+            String sql = "select 1 from rejected where name = ? and registration_number = ?";
             PreparedStatement st = con.prepareStatement(sql);
             st.setString(1, name);
             st.setString(2, schoolRegNo);
@@ -89,7 +89,7 @@ public class Model {
     public static String getSalt(String username){
         String salt = null;
         try(Connection con = Model.createConnection()){
-            String sql = "SELECT salt FROM participant where username = ?";
+            String sql = "SELECT salt FROM participant where user_name = ?";
             PreparedStatement st = con.prepareStatement(sql);
             st.setString(1,username);
             ResultSet rs = st.executeQuery();
@@ -105,7 +105,7 @@ public class Model {
     public static void updatePupil(Pupil pupil,String imageFilePath){
         String salt = Authenticator.PasswordHasher.generateSalt();
         String hashedPwd = Authenticator.PasswordHasher.hashPassword(pupil.getPassword(),salt);
-        String sql = "insert into participant(name,username,email,password,date_of_birth,school_reg_no,pupil_image,salt) values(?,?,?,?,?,?,?,?)";
+        String sql = "insert into participant(name,user_name,email,password,date_of_birth,school_reg_no,pupil_image,salt) values(?,?,?,?,?,?,?,?)";
 
         try(Connection con = Model.createConnection();) {
             PreparedStatement st = con.prepareStatement(sql);
@@ -128,7 +128,7 @@ public class Model {
     }
     //update rejected table if pupil is rejected
     public static void updateRejected(Pupil pupil,String imageFilePath){
-        String sql = "insert into rejected(name,username,email,password,date_of_birth,school_reg_no) values(?,?,?,?,?,?)";
+        String sql = "insert into rejected(name,user_name,email,password,date_of_birth,school_reg_no) values(?,?,?,?,?,?)";
 
         try(Connection con = Model.createConnection()) {
             PreparedStatement st = con.prepareStatement(sql);
@@ -152,7 +152,7 @@ public class Model {
         String salt = Model.getSalt(username);
         String hashedPwd = Authenticator.PasswordHasher.hashPassword(password,salt);
         try(Connection con = Model.createConnection()){
-            String sql = "SELECT 1 FROM participant where username = ? and password = ?";
+            String sql = "SELECT 1 FROM participant where user_name = ? and password = ?";
             PreparedStatement st = con.prepareStatement(sql);
             st.setString(1,username);
             st.setString(2,hashedPwd);
@@ -169,7 +169,7 @@ public class Model {
     //check if a supplied username and password match for a given school representative
     public static boolean checkSRLogin(String name, String password){
         try(Connection con = Model.createConnection()){
-            String sql = "SELECT 1 FROM SchoolRepresentative where name = ? and password = ?";
+            String sql = "SELECT 1 FROM SchoolRepresentative where username = ? and password = ?";
             PreparedStatement st = con.prepareStatement(sql);
             st.setString(1,name);
             st.setString(2,password);
@@ -203,12 +203,12 @@ public class Model {
     public static int getPupilId(String username){
         int id = 0;
         try(Connection con = Model.createConnection()){
-            String sql = "SELECT participant_id FROM participant where username = ?";
+            String sql = "SELECT id FROM participant where user_name = ?";
             PreparedStatement st = con.prepareStatement(sql);
             st.setString(1,username);
             ResultSet rs = st.executeQuery();
             rs.next();
-            id = rs.getInt("participant_id");
+            id = rs.getInt("id");
         }catch(SQLException e){
             System.out.println(e.getMessage());
         }
@@ -216,8 +216,8 @@ public class Model {
     }
 
     //record a challenge attempted by a participant
-    public static void recordChallenge(int challenge_no, int participant_id, LocalDateTime startTime, LocalDateTime endTime, int score){
-        String sql = "INSERT INTO ChallengeAttempt VALUES(?,?,?,?,?)";
+    public static void recordChallenge(int challenge_no, int participant_id, LocalDateTime startTime, LocalDateTime endTime, int score, double percentageRepitition,int redos, int complete){
+        String sql = "INSERT into challengeattempt(challenge_no,participant_id,start_time,score,end_time,percentage_repetition,redos,complete) VALUES(?,?,?,?,?,?,?,?)";
         try(Connection con= Model.createConnection();){
             PreparedStatement st= con.prepareStatement(sql);
             st.setInt(1,challenge_no);
@@ -229,6 +229,10 @@ public class Model {
 
             Timestamp end = Timestamp.valueOf(endTime);
             st.setTimestamp(5,end);
+            st.setDouble(6,percentageRepitition);
+            st.setInt(7,redos);
+            st.setInt(8,complete);
+
             st.executeUpdate();
 
         }catch(SQLException e){
@@ -240,7 +244,7 @@ public class Model {
     public static boolean checkChallengeAttempt(int challenge_no, int participant_id){
         try(Connection con = Model.createConnection()){
             System.out.println(challenge_no+" "+participant_id);
-            String sql = "SELECT 1 FROM ChallengeAttempt where challenge_no = ? and participant_id = ?";
+            String sql = "SELECT 1 FROM challengeattempt where challenge_no = ? and participant_id = ?";
             PreparedStatement st = con.prepareStatement(sql);
             st.setInt(1,challenge_no);
             st.setInt(2,participant_id);
@@ -256,7 +260,7 @@ public class Model {
 
   //record an attempted question
     public static void recordAttemptedQuestion(int challenge_no, int participant_id, LocalDateTime startTime,int question_no, char status){
-        String sql = "INSERT INTO AttemptedQuestion(challenge_no,participant_id,start_time,question_no,status) VALUES(?,?,?,?,?);";
+        String sql = "INSERT INTO attemptedquestion(challenge_no,participant_id,start_time,question_no,status) VALUES(?,?,?,?,?);";
         try(Connection con= Model.createConnection();){
             PreparedStatement st= con.prepareStatement(sql);
             st.setInt(1,challenge_no);
@@ -277,12 +281,12 @@ public class Model {
     public static int getChallengeDuration(int challenge_no){
         int duration = 0;
         try(Connection con = Model.createConnection()){
-            String sql = "SELECT duration FROM challenge where challenge_no = ?";
+            String sql = "SELECT challenge_duration FROM challenge where id = ?";
             PreparedStatement st = con.prepareStatement(sql);
             st.setInt(1,challenge_no);
             ResultSet rs = st.executeQuery();
             rs.next();
-            duration = rs.getInt("duration");
+            duration = rs.getInt("challenge_duration");
         }catch(SQLException e){
             System.out.println(e.getMessage());
         }
@@ -294,7 +298,7 @@ public class Model {
     public static ArrayList<String> getSchools(){
         ArrayList<String> schools = new ArrayList<>();
         try(Connection con = Model.createConnection()){
-            String sql = "SELECT school_name FROM School";
+            String sql = "SELECT school_name FROM school";
             Statement st = con.createStatement();
             ResultSet rs = st.executeQuery(sql);
             while(rs.next()){
@@ -310,7 +314,7 @@ public class Model {
     public static String getSchoolRegNo(String username){
         String schoolRegNo = null;
         try(Connection con = Model.createConnection()){
-            String sql = "SELECT school_reg_no FROM SchoolRepresentative where name = ?";
+            String sql = "SELECT school_reg_no FROM SchoolRepresentative where username = ?";
             PreparedStatement st = con.prepareStatement(sql);
             st.setString(1,username);
             ResultSet rs = st.executeQuery();
@@ -322,62 +326,68 @@ public class Model {
         return schoolRegNo;
     }
 
-//get the most correctly answered questions
-    public static ArrayList<Integer> getMostCorrectlyAnsweredQuestions(int challenge_no){
-        ArrayList<Integer> questions = new ArrayList<>();
+    //get a challenges open date and return it
+    public static LocalDateTime getOpenDate(int challenge_no){
+        LocalDateTime openDate = null;
         try(Connection con = Model.createConnection()){
-            String sql = "SELECT question_no FROM AttemptedQuestion where challenge_no = ? and status = 'C' GROUP BY question_no ORDER BY COUNT(question_no) DESC LIMIT 5";
+            String sql = "SELECT start_date FROM challenge where id = ?";
             PreparedStatement st = con.prepareStatement(sql);
             st.setInt(1,challenge_no);
             ResultSet rs = st.executeQuery();
-            while(rs.next()){
-                questions.add(rs.getInt("question_no"));
-            }
+            rs.next();
+            openDate = rs.getTimestamp("start_date").toLocalDateTime();
         }catch(SQLException e){
             System.out.println(e.getMessage());
         }
-        return questions;
+        return openDate;
     }
 
-    //get the most incorrectly answered questions
-    public static ArrayList<Integer> getMostIncorrectlyAnsweredQuestions(int challenge_no){
-        ArrayList<Integer> questions = new ArrayList<>();
+    //get the close date
+    public static LocalDateTime getCloseDate(int challenge_no){
+        LocalDateTime closeDate = null;
         try(Connection con = Model.createConnection()){
-            String sql = "SELECT question_no FROM AttemptedQuestion where challenge_no = ? and status = 'I' GROUP BY question_no ORDER BY COUNT(question_no) DESC LIMIT 5";
+            String sql = "SELECT end_date FROM challenge where id = ?";
             PreparedStatement st = con.prepareStatement(sql);
             st.setInt(1,challenge_no);
             ResultSet rs = st.executeQuery();
-            while(rs.next()){
-                questions.add(rs.getInt("question_no"));
-            }
+            rs.next();
+            closeDate = rs.getTimestamp("end_date").toLocalDateTime();
         }catch(SQLException e){
             System.out.println(e.getMessage());
         }
-        return questions;
+        return closeDate;
     }
 
-    //get the most attempted questions
-    public static ArrayList<Integer> getMostAttemptedQuestions(int challenge_no){
-        ArrayList<Integer> questions = new ArrayList<>();
+    //check if a challenge is open
+    public static boolean checkChallengeOpen(int challenge_no){
+        LocalDateTime openDate = Model.getOpenDate(challenge_no);
+        LocalDateTime closeDate = Model.getCloseDate(challenge_no);
+        LocalDateTime currentDate = LocalDateTime.now();
+        if(currentDate.isAfter(openDate) && currentDate.isBefore(closeDate)){
+            return true;
+        }
+        return false;
+    }
+
+    //number of distinct questions attempted by participant for a given challenge
+    public static int getDistinctQuestions(int challenge_no, int participant_id){
+        int count = 0;
         try(Connection con = Model.createConnection()){
-            String sql = "SELECT question_no FROM AttemptedQuestion where challenge_no = ? GROUP BY question_no ORDER BY COUNT(question_no) DESC LIMIT 5";
+            String sql = "SELECT COUNT(DISTINCT question_no) FROM attemptedquestion where challenge_no = ? and participant_id = ?";
             PreparedStatement st = con.prepareStatement(sql);
             st.setInt(1,challenge_no);
+            st.setInt(2,participant_id);
             ResultSet rs = st.executeQuery();
-            while(rs.next()){
-                questions.add(rs.getInt("question_no"));
-            }
+            rs.next();
+            count = rs.getInt(1);
         }catch(SQLException e){
             System.out.println(e.getMessage());
         }
-        return questions;
+        return count;
     }
 
-//    //get the most correctly answered questions
-//    public static ArrayList<Integer> getMostCorrectlyAnsweredQuestions(int challenge_no){
-//        ArrayList<Integer> questions = new ArrayList<>();
-//        try(Connection con = Model.createConnection()){
-//            String sql = "SELECT question_no FROM AttemptedQuestion where challenge_no = ? and status = 'C' GROUP BY question_no ORDER BY COUNT(question_no) DESC LIMIT 5";
-//            PreparedStatement st = con.prepareStatement
+
+
+
 
 }

@@ -61,12 +61,13 @@ public class Question {
         int totalQuestionsDone = 1;
         int questionsPassed = 0;
         int questionsFailed = 0;
-        int[] report = new int[4];
+        int complete = 1;
+        int[] report = new int[5];
 
         try(Connection conn = Model.createConnection();){
 
             System.out.println(challengeNumber);
-            String sql = "SELECT * from question where challenge_no = ? ORDER BY RAND() LIMIT 10";
+            String sql = "SELECT * from questions where challenge_no = ? ORDER BY RAND() LIMIT 10";
             PreparedStatement stmt = conn.prepareStatement(sql);
             stmt.setInt(1, challengeNumber);
             ResultSet rs = stmt.executeQuery();
@@ -85,6 +86,7 @@ public class Question {
 
                     if (timeElapsed.compareTo(timeLimit) > 0) {
                         printWriter.println("TIME UP!");
+                        complete=0;
                         break;
                     }
                     Duration timeRemaining = timeLimit.minus(timeElapsed);
@@ -99,23 +101,23 @@ public class Question {
 
                         //receiving answer from the pupil
                         String ans = br.readLine();
-                        if (Integer.parseInt(ans) == rs.getInt("answer")) {
+                        if (ans.equals(rs.getString("answer"))) {
                             printWriter.println("Correct!");
                             status = 'C';
                             score += rs.getInt("marks");
                             questionsPassed++;
-                        } else if (Integer.parseInt(ans) != rs.getInt("answer")){
+                        } else if(ans.isEmpty()){
+                            printWriter.println("No answer supplied");
+                            status = 'N';
+                            score +=0;
+                        } else{
 
                             printWriter.println("Incorrect!");
                             status = 'I';
                             score -=3;
                             questionsFailed++;
 
-                            if(ans.isEmpty()){
-                                printWriter.println("No answer supplied");
-                                status = 'N';
-                                score +=0;
-                            }
+
                         }
                         printWriter.println("-----------------------------------");
                         printWriter.println("-----------------------------------");
@@ -134,10 +136,15 @@ public class Question {
         }catch (SQLException e){
             System.out.println(e.getMessage());
         };
+        //Eliminate negative marks
+        if(score<0){
+            score=0;
+        }
         report[0] = score;
         report[1] = questionsPassed;
         report[2] = questionsFailed;
         report[3] = totalQuestionsDone;
+        report[4] = complete;
 
         return report;
     }

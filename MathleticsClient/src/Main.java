@@ -32,7 +32,7 @@ public class Main {
             String finalRequest;
             //handle image file sending
             if (request.startsWith("register")) {
-                finalRequest = sendImage(request);
+                finalRequest = sendImageBase64(request);
                 out.println(finalRequest);
 
             } else{
@@ -59,7 +59,7 @@ public class Main {
 
     public static void showMenu(){
         String instructionSet= """
-                                            **WELCOME TO MATHLETICS CHALLENGE SYSTEM**
+                                            **WELCOME TO IES MATH CHALLENGE SYSTEM**
                 Available commands:
                 _______________________________________________________________________________________________________________________
                 >register <username> <firstname> <lastname> <email> <password> <DateOfBirth> <school_reg_no> <imageFile.png> to register
@@ -70,23 +70,52 @@ public class Main {
         System.out.println(instructionSet);
 
     }
-  //send image to the server
-  public static String sendImage(String request) throws IOException {
-    String encodedString=null;
-    String finalRequest = null;
-    if (request.startsWith("register")) {
-        String[] req = request.split(" ");
-        if (req.length == 9) {
-            String imageFile = req[8];
-            File file = new File(imageFile);
-            byte[] fileContent = Files.readAllBytes(file.toPath());
-            encodedString = Base64.getEncoder().encodeToString(fileContent);;
-            finalRequest = req[0] + " "+req[1] + " "+req[2] + " "+req[3] + " "+req[4] + " "+req[5] + " " +req[6] + " "+req[7] + " "+ encodedString;
+
+    //send image to the server
+    public static String sendImageBase64(String request) throws IOException {
+        String encodedString=null;
+        String finalRequest = null;
+        if (request.startsWith("register")) {
+            String[] req = request.split(" ");
+            if (req.length == 9) {
+                String imageFile = req[8];
+                File file = new File(imageFile);
+                byte[] fileContent = Files.readAllBytes(file.toPath());
+                encodedString = Base64.getEncoder().encodeToString(fileContent);;
+                finalRequest = req[0] + " "+req[1] + " "+req[2] + " "+req[3] + " "+req[4] + " "+req[5] + " " +req[6] + " "+req[7] + " "+ encodedString;
+            }
         }
+        return finalRequest;
     }
-    return finalRequest;
+
+
+
+//    public static void sendImage(String request, Socket soc) throws IOException {
+//        if (request.startsWith("register")) {
+//            String[] req = request.split(" ");
+//            if (req.length == 9) {
+//                String imageFile = req[8];
+//                File file = new File(imageFile);
+//
+//                try (PrintWriter out = new PrintWriter(soc.getOutputStream(), true);
+//                     FileInputStream fis = new FileInputStream(file);
+//                     BufferedOutputStream bos = new BufferedOutputStream(soc.getOutputStream())) {
+//
+//                    // Send metadata
+//                    out.println(file.getName());
+//                    out.println(file.length());
+//                    out.flush(); // Ensure metadata is sent before binary data
+//
+//                    // Send binary data
+//                    byte[] buffer = new byte[1024];
+//                    int bytesRead;
+//                    while ((bytesRead = fis.read(buffer)) != -1) {
+//                        bos.write(buffer, 0, bytesRead);
+//                    }
+//                    bos.flush(); // Ensure all data is sent
+//                }
+//            }
+//        }
+//    }
+
 }
-
-
-}
-

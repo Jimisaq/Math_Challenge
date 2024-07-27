@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 class Challenge extends Model
 {
     use HasFactory;
-
+    protected $table = 'challenge';
     protected $fillable = [
         'challenge_name',
         'start_date',

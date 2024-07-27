@@ -103,72 +103,60 @@
 
         <div class="metric">
             <h3>Available Challenges</h3>
-{{--            <p id="school-rankings">{{ $data['validChallenges'] }}</p> <!-- Laravel: Display count of top schools -->--}}
-
+            <p id="correct-questions">{{ $data['availableChallenges']}}</p> <!-- Laravel: Display count of correctly answered questions -->
 
         </div>
     </div>
 
     <div class="container charts">
         <div class="row">
-            <div class="col-lg-5 chart-container">
+            <div class="col-lg-8 chart-container">
                 <h3>Performance of Schools and Participants Over Time</h3>
                 <canvas id="performanceChart"></canvas>
             </div>
-            <div class="col-lg-5 chart-container">
-                <h3>Percentage Repetition of Questions</h3>
-                <canvas id="questionRepetitionChart"></canvas>
-            </div>
         </div>
         <div>
-            <div class="col-lg-8 chart-container pt-3">
-                <h3>School Rankings</h3>
-                <canvas></canvas>
-            </div>
+
         </div>
 
     </div>
 
     <div class="tables">
-        <h3>Worst Performing Schools</h3>
-        <table id="worst-schools">
+        <h3>Best Performing Schools</h3>
+        <table id="bests-schools">
             <thead>
                 <tr>
                     <th>School</th>
-                    <th>Score</th>
+                    <th>Average Score</th>
                 </tr>
             </thead>
             <tbody>
 
+            @foreach($data['bestSchools'] as $school)
                 <tr>
-                    <td>School A</td>
-                    <td>45</td>
+                    <td>{{ $school->school_name }}</td>
+                    <td>{{ $school->avg_score }}</td>
                 </tr>
-                <tr>
-                    <td>School B</td>
-                    <td>50</td>
-                </tr>
+            @endforeach
             </tbody>
         </table>
 
         <h3>Best Performing Schools</h3>
-        <table id="best-schools">
+        <table id="worst-schools">
             <thead>
                 <tr>
                     <th>School</th>
-                    <th>Score</th>
+                    <th>Average Score</th>
                 </tr>
             </thead>
             <tbody>
 
+            @foreach($data['worstSchools'] as $school)
                 <tr>
-                    <td>School C</td>
-                    <td>95</td>
+                    <td>{{ $school->school_name }}</td>
+                    <td>{{ $school->avg_score }}</td>
                 </tr>
-                <tr>
-                    <td>School D</td>
-                    <td>90</td>
-                </tr>
+            @endforeach
             </tbody>
         </table>
 
@@ -182,15 +170,11 @@
             </thead>
             <tbody>
 
+            @foreach($data['incompleteParticipants'] as $participant)
                 <tr>
-                    <td>Participant 1</td>
-                    <td>Challenge A</td>
+                    <td>{{ $participant->name }}</td>
                 </tr>
-                <tr>
-                    <td>Participant 2</td>
-                    <td>Challenge B</td>
-                </tr>
-
+            @endforeach
             </tbody>
         </table>
     </div>
@@ -211,187 +195,179 @@
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
-        // Example data for performance charts
-        const sch = @json($school);
-        console.log('Performance:', performance);
+            // Example data for performance charts
+            {{--//const sch = @json($schools);--}}
+            console.log('Performance:', performance);
 
-        const performanceData = {
+            const performanceData = {
             labels: ['2020', '2021', '2022', '2023'],
             datasets: [
-                {
+        {
 
-                    label: sch[0],
-                    data: [75, 85, 80, 90],
-                    borderColor: 'rgba(255, 99, 132, 1)',
-                    backgroundColor: 'rgba(255, 99, 132, 0.2)',
-                    fill: true,
-                    tension: 0.1
-                },
-                {
-                    label: sch[1],
-                    data: [65, 70, 75, 80],
-                    borderColor: 'rgba(54, 162, 235, 1)',
-                    backgroundColor: 'rgba(54, 162, 235, 0.2)',
-                    fill: true,
-                    tension: 0.1
-                },
-                {
-                    label: sch[2],
-                    data: [65, 50, 35, 83],
-                    borderColor: 'rgba(34, 162, 235, 1)',
-                    backgroundColor: 'rgba(54, 162, 235, 0.2)',
-                    fill: true,
-                    tension: 0.1
-                }
+            label: 'schools',
+            data: [75, 85, 80, 90],
+            borderColor: 'rgba(255, 99, 132, 1)',
+            backgroundColor: 'rgba(255, 99, 132, 0.2)',
+            fill: true,
+            tension: 0.1
+        },
+        {
+            label: 'Participants',
+            data: [65, 70, 75, 80],
+            borderColor: 'rgba(54, 162, 235, 1)',
+            backgroundColor: 'rgba(54, 162, 235, 0.2)',
+            fill: true,
+            tension: 0.1
+        },
             ]
         };
 
-        const repetitionData = {
-            labels: ['Participant 1', 'Participant 2', 'Participant 3'],
+            const repetitionData = {
+            labels: ['Addition', 'Word Problems', 'Logis'],
             datasets: [{
-                label: 'Repetition Percentage',
-                data: [30, 45, 60],
-                backgroundColor: 'rgba(153, 102, 255, 0.2)',
-                borderColor: 'rgba(153, 102, 255, 1)',
-                borderWidth: 1
-            }]
+            label: 'Repetition Percentage',
+            data: [30, 45, 60],
+            backgroundColor: 'rgba(153, 102, 255, 0.2)',
+            borderColor: 'rgba(153, 102, 255, 1)',
+            borderWidth: 1
+        }]
         };
 
-        // Create Performance Chart
-        var ctx1 = document.getElementById('performanceChart').getContext('2d');
-        var performanceChart = new Chart(ctx1, {
+            // Create Performance Chart
+            var ctx1 = document.getElementById('performanceChart').getContext('2d');
+            var performanceChart = new Chart(ctx1, {
             type: 'line',
             data: performanceData,
             options: {
-                responsive: true,
-                plugins: {
-                    legend: {
-                        position: 'top',
-                    },
-                    tooltip: {
-                        callbacks: {
-                            label: function(tooltipItem) {
-                                return `${tooltipItem.dataset.label}: ${tooltipItem.formattedValue}%`;
-                            }
-                        }
-                    }
-                },
-                scales: {
-                    x: {
+            responsive: true,
+            plugins: {
+            legend: {
+            position: 'top',
+        },
+            tooltip: {
+            callbacks: {
+            label: function(tooltipItem) {
+            return `${tooltipItem.dataset.label}: ${tooltipItem.formattedValue}%`;
+        }
+        }
+        }
+        },
+            scales: {
+            x: {
 
-                        title: {
-                            display: true,
-                            text: 'Year'
-                        }
-                    },
-                    y: {
-                        title: {
-                            display: true,
-                            text: 'Performance'
-                        },
+            title: {
+            display: true,
+            text: 'Year'
+        }
+        },
+            y: {
+            title: {
+            display: true,
+            text: 'Performance'
+        },
 
-                        beginAtZero: true
-                    }
-                }
-            }
+            beginAtZero: true
+        }
+        }
+        }
         });
 
-        // Create Repetition Chart
-        var ctx2 = document.getElementById('questionRepetitionChart').getContext('2d');
-        var questionRepetitionChart = new Chart(ctx2, {
+            // Create Repetition Chart
+            var ctx2 = document.getElementById('questionRepetitionChart').getContext('2d');
+            var questionRepetitionChart = new Chart(ctx2, {
             type: 'bar',
             data: repetitionData,
             options: {
-                responsive: true,
-                plugins: {
-                    legend: {
-                        position: 'top',
-                    },
-                    tooltip: {
-                        callbacks: {
-                            label: function(tooltipItem) {
-                                return `${tooltipItem.dataset.label}: ${tooltipItem.formattedValue}%`;
-                            }
-                        }
-                    }
-                },
-                scales: {
+            responsive: true,
+            plugins: {
+            legend: {
+            position: 'top',
+        },
+            tooltip: {
+            callbacks: {
+            label: function(tooltipItem) {
+            return `${tooltipItem.dataset.label}: ${tooltipItem.formattedValue}%`;
+        }
+        }
+        }
+        },
+            scales: {
 
-                    x: {
-                        title: {
-                            display: true,
-                            text: 'Participant'
-                        }
-                    },
-                    y: {
-                        title: {
-                            display: true,
-                            text: 'Repetition Percentage'
-                        },
+            x: {
+            title: {
+            display: true,
+            text: 'Participant'
+        }
+        },
+            y: {
+            title: {
+            display: true,
+            text: 'Repetition Percentage'
+        },
 
-                        beginAtZero: true
-                    }
-                }
-            }
+            beginAtZero: true
+        }
+        }
+        }
         });
 
-        // Apply Filters
-        document.getElementById('apply-filters').addEventListener('click', function() {
+            // Apply Filters
+            document.getElementById('apply-filters').addEventListener('click', function() {
             let date = document.getElementById('date-filter').value;
             let category = document.getElementById('category-filter').value;
 
             fetch('/analytics/filter', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                },
-                body: JSON.stringify({ date, category })
-            })
+            method: 'POST',
+            headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-TOKEN': '{{ csrf_token() }}'
+        },
+            body: JSON.stringify({ date, category })
+        })
             .then(response => response.json())
             .then(data => {
-                // Update metrics
-                document.getElementById('correct-questions').innerText = data.questionsCount;
-                document.getElementById('school-rankings').innerText = data.schoolsCount;
+            // Update metrics
+            document.getElementById('correct-questions').innerText = data.questionsCount;
+            document.getElementById('school-rankings').innerText = data.schoolsCount;
 
-                // Update charts
-                performanceChart.data.labels = data.performance.labels;
-                performanceChart.data.datasets[0].data = data.performance.data[0];
-                performanceChart.data.datasets[1].data = data.performance.data[1];
-                performanceChart.update();
+            // Update charts
+            performanceChart.data.labels = data.performance.labels;
+            performanceChart.data.datasets[0].data = data.performance.data[0];
+            performanceChart.data.datasets[1].data = data.performance.data[1];
+            performanceChart.update();
 
-                questionRepetitionChart.data.labels =
+            questionRepetitionChart.data.labels =
 
- data.repetition.labels;
-                questionRepetitionChart.data.datasets[0].data = data.repetition.data;
-                questionRepetitionChart.update();
+            data.repetition.labels;
+            questionRepetitionChart.data.datasets[0].data = data.repetition.data;
+            questionRepetitionChart.update();
 
-                // Update tables
-                const worstSchoolsTableBody = document.getElementById('worst-schools').getElementsByTagName('tbody')[0];
-                worstSchoolsTableBody.innerHTML = '';
-                data.worstSchools.forEach(school => {
-                    const row = worstSchoolsTableBody.insertRow();
-                    row.insertCell(0).innerText = school.name;
-                    row.insertCell(1).innerText = school.score;
-                });
+            // Update tables
+            const worstSchoolsTableBody = document.getElementById('worst-schools').getElementsByTagName('tbody')[0];
+            worstSchoolsTableBody.innerHTML = '';
+            data.worstSchools.forEach(school => {
+            const row = worstSchoolsTableBody.insertRow();
+            row.insertCell(0).innerText = school.name;
+            row.insertCell(1).innerText = school.score;
+        });
 
-                const bestSchoolsTableBody = document.getElementById('best-schools').getElementsByTagName('tbody')[0];
-                bestSchoolsTableBody.innerHTML = '';
-                data.bestSchools.forEach(school => {
-                    const row = bestSchoolsTableBody.insertRow();
-                    row.insertCell(0).innerText = school.name;
-                    row.insertCell(1).innerText = school.score;
-                });
+            const bestSchoolsTableBody = document.getElementById('best-schools').getElementsByTagName('tbody')[0];
+            bestSchoolsTableBody.innerHTML = '';
+            data.bestSchools.forEach(school => {
+            const row = bestSchoolsTableBody.insertRow();
+            row.insertCell(0).innerText = school.name;
+            row.insertCell(1).innerText = school.score;
+        });
 
-                const incompleteChallengesTableBody = document.getElementById('incomplete-challenges').getElementsByTagName('tbody')[0];
-                incompleteChallengesTableBody.innerHTML = '';
-                data.incompleteChallenges.forEach(participant => {
-                    const row = incompleteChallengesTableBody.insertRow();
-                    row.insertCell(0).innerText = participant.name;
-                    row.insertCell(1).innerText = participant.challenge;
-                });
-            });
+            const incompleteChallengesTableBody = document.getElementById('incomplete-challenges').getElementsByTagName('tbody')[0];
+            incompleteChallengesTableBody.innerHTML = '';
+            data.incompleteChallenges.forEach(participant => {
+            const row = incompleteChallengesTableBody.insertRow();
+            row.insertCell(0).innerText = participant.name;
+            row.insertCell(1).innerText = participant.challenge;
+        });
+        });
         });
     </script>
-</body>
+        </body>
 @endsection

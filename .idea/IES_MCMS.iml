@@ -187,5 +187,6 @@
     <orderEntry type="library" name="src" level="project" />
     <orderEntry type="library" name="activation" level="project" />
     <orderEntry type="library" name="mail" level="project" />
+    <orderEntry type="library" name="font-awesome" level="application" />
   </component>
 </module>

@@ -8,12 +8,10 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
    class School extends Model
    {
        use HasFactory;
-
+       protected $table = 'school';
        protected $fillable = [
            'school_name',
            'district',
            'registration_number',
-           'representative_email',
-           'representative_name',
        ];
    }
